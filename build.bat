@@ -1,5 +1,5 @@
-flex lexer.l
+flex RubyLexer.l
 g++ lex.yy.c
 
 @echo off
-type input.txt | a.exe > output.txt
+type test.txt | a.exe > output.txt
