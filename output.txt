@@ -55,7 +55,7 @@ Operator: +
 Local variable or method name: s
 Bracket: [
 Decimal number: 6
-Operator: ..
+Sign: .
 Decimal number: 15
 Bracket: ]
 Operator: +

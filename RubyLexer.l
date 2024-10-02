@@ -200,7 +200,13 @@ yield           { printf("Keyword: yield\n"); }
                             printf("expected =end"); BEGIN(INITIAL); 
                         }
 
-0|[1-9]{DIGIT_NUMBER}       { 
+0{OCT_NUMBER}           {
+                                removeCharacterFromString(yytext + 1,temp1,'_');
+                                num = strtoll(temp1, NULL, 8);
+                                printf("Binary number: %d\n", num); 
+                            }
+
+{DIGIT_NUMBER}\.?   { 
                                 removeCharacterFromString(yytext,temp1,'_');
                                 num = atoi(temp1);
                                 printf("Decimal number: %d\n", num);

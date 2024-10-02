@@ -1,0 +1,21 @@
+Decimal number: 6
+
+Float number: 6.200000
+
+
+
+String: Hello world
+
+
+String: "
+
+
+Local variable or method name: _1
+
+
+Binary number: 9
+
+Binary number: 2
+
+
+Float number: 0.050000
