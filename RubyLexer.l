@@ -37,10 +37,7 @@ EXPONENT [eE][+-]?{DIGIT_NUMBER}
     int concatenation = 0;
 %}
 
-and             { 
-                  printf("Keyword: and\n");
-                  return AND;
-                }
+and             { printf("Keyword: and\n; return AND}
 begin		    { printf("Keyword: begin\n"); return BEGIN_KEYWORD; }
 class           { printf("Keyword: class\n"); return CLASS; }
 new             { printf("Keyword: new\n"); return NEW; }
