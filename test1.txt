@@ -1,14 +1,5 @@
-6.
-6.2
-
-"Hello 
+r and 6. 6.2 "Hello 
 world"
 
-"\""
-
-_1
-
-011
-02
-
-5E-02
+and
+and

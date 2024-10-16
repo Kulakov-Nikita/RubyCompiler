@@ -5,7 +5,7 @@
 %{
 	#include <stdio.h> 
     #include <string.h>   
-
+    #include "parser.tab.h"
     void removeCharacterFromString(const char * str, char * dest, char deleted_char);
     int btoi(const char * str);
 %}
@@ -37,106 +37,86 @@ EXPONENT [eE][+-]?{DIGIT_NUMBER}
     int concatenation = 0;
 %}
 
-alias           { printf("Keyword: alias\n"); }
-and             { printf("Keyword: and\n"); }
-BEGIN           { printf("Keyword: BEGIN\n"); }
-begin           { printf("Keyword: begin\n"); }
-break           { printf("Keyword: break\n"); }
-case            { printf("Keyword: case\n"); }
-class           { printf("Keyword: class\n"); }
-def             { printf("Keyword: def\n"); }
-"defined?"	    { printf("Keyword: defined?\n"); }
-do              { printf("Keyword: do\n"); }
-else            { printf("Keyword: else\n"); }
-elsif           { printf("Keyword: elsif\n"); }
-END             { printf("Keyword: END\n"); }
-end             { printf("Keyword: end\n"); }
-ensure          { printf("Keyword: ensure\n"); }
-false           { printf("Keyword: false\n"); }
-for             { printf("Keyword: for\n"); }
-if              { printf("Keyword: if\n"); }
-in              { printf("Keyword: in\n"); }
-module          { printf("Keyword: module\n"); }
-next            { printf("Keyword: next\n"); }
-nil             { printf("Keyword: nil\n"); }
-not             { printf("Keyword: not\n"); }
-or              { printf("Keyword: or\n"); }
-redo            { printf("Keyword: redo\n"); }
-rescue          { printf("Keyword: rescue\n"); }
-retry           { printf("Keyword: retry\n"); }
-return          { printf("Keyword: return\n"); }
-self            { printf("Keyword: self\n"); }
-super           { printf("Keyword: super\n"); }
-then            { printf("Keyword: then\n"); }
-true            { printf("Keyword: true\n"); }
-undef           { printf("Keyword: undef\n"); }
-unless          { printf("Keyword: unless\n"); }
-until           { printf("Keyword: until\n"); }
-when            { printf("Keyword: when\n"); }
-while           { printf("Keyword: while\n"); }
-yield           { printf("Keyword: yield\n"); }
+and             { 
+                  printf("Keyword: and\n");
+                  return AND;
+                }
+begin		    { printf("Keyword: begin\n"); return BEGIN_KEYWORD; }
+class           { printf("Keyword: class\n"); return CLASS; }
+new             { printf("Keyword: new\n"); return NEW; }
+def             { printf("Keyword: def\n"); return DEF; }
+"defined?"	    { printf("Keyword: defined?\n"); return DEFINED; }
+do              { printf("Keyword: do\n"); return DO; }
+if              { printf("Keyword: if\n"); return IF; }
+else            { printf("Keyword: else\n"); return ELSE; }
+elsif           { printf("Keyword: elsif\n"); return ELSIF; }
+end             { printf("Keyword: end\n"); return END; }
+false           { printf("Keyword: false\n"); return FALSE; }
+for             { printf("Keyword: for\n"); return FOR; }
+in              { printf("Keyword: in\n"); return IN; }
+not             { printf("Keyword: not\n"); return NOT; }
+or              { printf("Keyword: or\n"); return OR; }
+return          { printf("Keyword: return\n"); return RETURN; }
+self            { printf("Keyword: self\n"); return SELF; }
+super           { printf("Keyword: super\n"); return SUPER; }
+then            { printf("Keyword: then\n"); return THEN; }
+true            { printf("Keyword: true\n"); return TRUE; }
+until           { printf("Keyword: until\n"); return UNTIL; }
+while           { printf("Keyword: while\n"); return WHILE; }
 
-"+"         { printf("Operator: +\n"); }
-"-"         { printf("Operator: -\n"); }
-"*"         { printf("Operator: *\n"); }
-"/"         { printf("Operator: /\n"); }
-"%"         { printf("Operator: %\n"); }
-"**"        { printf("Operator: **\n"); }
 
-"=="        { printf("Operator: ==\n"); }
-"!="        { printf("Operator: !=\n"); }
-">"         { printf("Operator: >\n"); }
-"<"         { printf("Operator: <\n"); }
-">="        { printf("Operator: >=\n"); }
-"<="        { printf("Operator: <=\n"); }
-"<=>"       { printf("Operator: <=>\n"); }
-"==="       { printf("Operator: ===\n"); }
-"eql?"      { printf("Operator: eql?\n"); }
-"equal?"    { printf("Operator: equal?\n"); }
+"+"         { printf("Operator: +\n"); return ARITHMETIC_PLUS_OP; }
+"-"         { printf("Operator: -\n"); return ARITHMETIC_MINUS_OP; }
+"*"         { printf("Operator: *\n"); return ARITHMETIC_MUL_OP; }
+"/"         { printf("Operator: /\n"); return ARITHMETIC_DIV_OP; }
+"%"         { printf("Operator: %%\n"); return ARITHMETIC_MOD_OP; }
+"**"        { printf("Operator: **\n"); return ARITHMETIC_POW_OP; }
 
-"="         { printf("Operator: =\n"); }
-"+="        { printf("Operator: +=\n"); }
-"-="        { printf("Operator: -=\n"); }
-"*="        { printf("Operator: *=\n"); }
-"/="        { printf("Operator: /=\n"); }
-"%="        { printf("Operator: %=\n"); }
-"**="       { printf("Operator: **=\n"); }
+"=="        { printf("Operator: ==\n"); return EQL_OP; }
+"!="        { printf("Operator: !=\n"); return NOT_EQL_OP; }
+">"         { printf("Operator: >\n"); return GREATER_OP; }
+"<"         { printf("Operator: <\n"); return LESS_OP; }
+">="        { printf("Operator: >=\n"); return GREATER_OR_EQL_OP; }
+"<="        { printf("Operator: <=\n"); return LESS_OR_EQL_OP; }
+"<=>"       { printf("Operator: <=>\n"); return COMB_COMPRASION_OP; }
+"==="       { printf("Operator: ===\n"); return CASE_EQL_OP; }
 
-"&"         { printf("Operator: &\n"); }
-"|"         { printf("Operator: |\n"); }
-"^"         { printf("Operator: ^\n"); }
-"~"         { printf("Operator: ~\n"); }
-"<<"        { printf("Operator: <<\n"); }
-">>"        { printf("Operator: >>\n"); }
+"="         { printf("Operator: =\n"); return ASSIGN_OP; }
 
-"&&"        { printf("Operator: &&\n"); }
-"||"        { printf("Operator: ||\n"); }
-"!"         { printf("Operator: !\n"); }
+"&&"        { printf("Operator: &&\n"); return LOGICAL_AND_OP; }
+"||"        { printf("Operator: ||\n"); return LOGICAL_OR_OP; }
+"!"         { printf("Operator: !\n"); return LOGICAL_NOT_OP; }
 
-"?:"        { printf("Operator: ?:\n"); }
+".."        { printf("Operator: ..\n"); return INCLUSIVE_RANGE_OP; }
+"..."       { printf("Operator: ...\n"); return EXCLUSIVE_RANGE_OP; }
 
-".."        { printf("Operator: ..\n"); }
-"..."       { printf("Operator: ...\n"); }
-
-":"         { printf("Sign: :\n"); }
-"."         { printf("Sign: .\n"); }
-","         { printf("Sign: ,\n"); }
-"("         { printf("Bracket: (\n"); }
-")"         { printf("Bracket: )\n"); }
-"{"         { printf("Bracket: {\n"); }
+\n          { return NEW_LINE_SYMBOL;  }
+"."         { printf("Sign: .\n");
+                return DOT_SYMBOL; }
+","         { printf("Sign: ,\n");
+                return COMMA_SYMBOL; }
+";"         { printf("Sign: ;\n");
+                return SEMICOLON_SYMBOL; }
+"("         { printf("Bracket: (\n");
+                return OPEN_ROUND_BRACKET; }
+")"         { printf("Bracket: )\n");
+                return CLOSE_ROUND_BRACKET; }
+"{"         { printf("Bracket: {\n");
+                return OPEN_CURLY_BRACKET; }
 "}"         {
                 if(concatenation == 0) {
-                    printf("Bracket: }\n");
+                printf("Bracket: }\n");
+                    return CLOSE_CURLY_BRACKET;
                 } else {
                     concatenation--;
                     BEGIN(STRING);
                     string[0] = 0;
-                    printf("Found concatenation with string\n");
+                    return ARITHMETIC_PLUS_OP;
                 }
             }
-"["         { printf("Bracket: [\n"); }
-"]"         { printf("Bracket: ]\n"); }
-
+"["         { return OPEN_SQUARE_BRACKET; }
+"]"         { return CLOSE_SQUARE_BRACKET; }
+"@"         { return COMMERCIAL_AT; }
 \"          { 
                 string[0] = 0; 
                 BEGIN(STRING);    
@@ -167,6 +147,7 @@ yield           { printf("Keyword: yield\n"); }
                                 temp1[0] = (char) num;
                                 temp1[1] = 0;
                                 strcat(string, temp1);
+                                return INTEGER_NUMBER; 
                             }
 
 <STRING>\\x{HEX_DIGIT}{1,2} { 
@@ -174,6 +155,7 @@ yield           { printf("Keyword: yield\n"); }
                                 temp1[0] = (char) num;
                                 temp1[1] = 0;
                                 strcat(string, temp1);
+                                return INTEGER_NUMBER; 
                             }
 <STRING>\\x[^0-9A-Fa-f\n"]* { printf("ERROR: invalid hex escape \n"); } 
 <STRING><<EOF>>             { printf("ERROR: expected \" \n");}
@@ -203,13 +185,15 @@ yield           { printf("Keyword: yield\n"); }
 0{OCT_NUMBER}           {
                                 removeCharacterFromString(yytext + 1,temp1,'_');
                                 num = strtoll(temp1, NULL, 8);
-                                printf("Binary number: %d\n", num); 
+                                printf("Binary number: %d\n", num);
+                                return INTEGER_NUMBER; 
                             }
 
 {DIGIT_NUMBER}\.?   { 
                                 removeCharacterFromString(yytext,temp1,'_');
                                 num = atoi(temp1);
                                 printf("Decimal number: %d\n", num);
+                                return INTEGER_NUMBER; 
                             }
 
 [1-9](_*{DIGIT}+)*_*        { printf("ERROR: invalid decimal number: %s\n", yytext); }
@@ -217,7 +201,8 @@ yield           { printf("Keyword: yield\n"); }
 0[dD][1-9]{DIGIT_NUMBER}    {
                                 removeCharacterFromString(yytext+2,temp1,'_');
                                 num = atoi(temp1);
-                                printf("Decimal number: %d\n", num);              
+                                printf("Decimal number: %d\n", num);    
+                                return INTEGER_NUMBER; 
                             }
 
 0_*[dD]_*[1-9](_*{DIGIT}+)*_* { printf("ERROR: invalid decimal number with dD: %s\n", yytext); }
@@ -228,6 +213,7 @@ yield           { printf("Keyword: yield\n"); }
                                 removeCharacterFromString(temp2,temp1,'O');
                                 sscanf(temp1,"%o",&num);
                                 printf("Octal number: %d\n", num);
+                                return INTEGER_NUMBER; 
                             }
 
 0_*[oO]?_*{OCT_DIGIT}(_*{OCT_DIGIT}+)*_* { printf("ERROR: invalid octal number: %s\n", yytext); }
@@ -236,6 +222,7 @@ yield           { printf("Keyword: yield\n"); }
                                 removeCharacterFromString(yytext + 2,temp1,'_');
                                 sscanf(temp1,"%x",&num);
                                 printf("Hexadecimal number: %d\n", num);
+                                return INTEGER_NUMBER; 
                             }
 
 0_*[xX]_*{HEX_DIGIT}(_*{HEX_DIGIT}+)*_* { printf("ERROR: invalid hexadecimal number: %s\n", yytext); }
@@ -244,6 +231,7 @@ yield           { printf("Keyword: yield\n"); }
                                 removeCharacterFromString(yytext + 2,temp1,'_');
                                 num = btoi(temp1);
                                 printf("Binary number: %d\n", num); 
+                                return INTEGER_NUMBER; 
                             }
 
 0_*[bB]_*{BIN_DIGIT}(_*{BIN_DIGIT}+)*_* { printf("ERROR: invalid binary number: %s\n", yytext); }
@@ -252,23 +240,28 @@ yield           { printf("Keyword: yield\n"); }
 (0|[1-9](_?{DIGIT})*)(\.{DIGIT}+(_{DIGIT}+)*)?({EXPONENT})? {
                                                                  removeCharacterFromString(yytext,temp1,'_'); 
                                                                  real_num = atof(temp1);                                                                
-                                                                 printf("Float number: %f\n", real_num); 
+                                                                 printf("Float number: %f\n", real_num);
+                                                                 return FLOAT_NUMBER;
                                                             }
 
 [a-z_]{LETTER_NUMBER_UNDERSCOPE}*           {
                                                 printf("Local variable or method name: %s\n", yytext);
+                                                return VAR_OR_METHOD_NAME;
                                             }
 
 \@[a-z_]{LETTER_NUMBER_UNDERSCOPE}*         {
                                                 printf("Instance variable: %s\n", yytext);
+                                                return INSTANCE_VAR_NAME;
                                             }
 
 \@\@[a-z_]{LETTER_NUMBER_UNDERSCOPE}*       {
                                                 printf("Class variable: %s\n", yytext);
+                                                return CLASS_VAR_NAME;
                                             }
 
 [A-Z]{LETTER_NUMBER_UNDERSCOPE}*            {
                                                 printf("Class name: %s\n", yytext);
+                                                return CLASS_NAME;
                                             }
 
 . {}
