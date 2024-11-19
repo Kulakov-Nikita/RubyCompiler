@@ -2,6 +2,9 @@
 
 %{
 #include <stdio.h>
+#include "tree_nodes.h"
+#include <malloc.h>
+
 void yyerror(const char* message) {
     fprintf(stderr, message);
 }
@@ -9,8 +12,31 @@ int yylex();
 int yyparse();
 extern FILE* yyin;
 
+struct expr_struct * create_const_integer_expr(enum expr_type type, int val);
+struct expr_struct * create_const_float_expr(float val);
+struct expr_struct * create_const_string_expr(enum expr_type type, char * val);
+struct expr_struct * create_op_expr(enum expr_type type, struct expr_struct * left, struct expr_struct * right);
+struct stmt_list_struct * create_stmt_list(struct stmt_struct * val);
+struct stmt_list_struct * add_to_stmt_list(struct stmt_list_struct * list, struct stmt_struct * val);
 
 %}
+
+%union {
+    int int_un;
+    float float_un;
+    char * string_un;
+    char * var_name_un;
+    char * instance_var_name_un;
+    char * class_name_un;
+    char * class_var_name_un;
+    struct expr_struct * expr_un; 
+    struct stmt_struct * stmt_un;
+    struct stmt_list_struct * stmt_list_un;
+}
+
+%type <expr_un> expr
+%type <stmt_un> stmt
+%type <stmt_list_un> stmt_list
 
 %token ALIAS_KEYWORD
 %token AND_KEYWORD
@@ -105,20 +131,21 @@ extern FILE* yyin;
 %token SEMICOLON_SYMBOL
 %token NEW_LINE_SYMBOL
 
-%token STRING 
-%token INTEGER_NUMBER
-%token FLOAT_NUMBER
+%token <string_un> STRING 
+%token <int_un> INTEGER_NUMBER
+%token <float_un> FLOAT_NUMBER
 
-%token VAR_METHOD_NAME
-%token INSTANCE_VAR_NAME
-%token CLASS_NAME
-%token CLASS_VAR_NAME
+%token <var_name_un> VAR_METHOD_NAME
+%token <instance_var_name_un> INSTANCE_VAR_NAME
+%token <class_name_un> CLASS_NAME
+%token <class_var_name_un> CLASS_VAR_NAME
 
 %start program
 
+%left UNTIL_KEYWORD WHILE_KEYWORD
 %left AND_KEYWORD OR_KEYWORD
 %right NOT_KEYWORD
-%nonassoc DEFINED_KEYWORD
+%left DEFINED_KEYWORD
 %right ASSIGN_OP MOD_ASSIGN_OP DIV_ASSIGN_OP SUB_ASSIGN_OP ADD_ASSIGN_OP MUL_ASSIGN_OP POW_ASSIGN_OP
 %nonassoc INCLUSIVE_RANGE_OP EXCLUSIVE_RANGE_OP
 %left LOGICAL_OR_OP
@@ -132,76 +159,68 @@ extern FILE* yyin;
 %left ARITHMETIC_MUL_OP ARITHMETIC_DIV_OP ARITHMETIC_MOD_OP
 %right UNARY_MINUS
 %right LOGICAL_NOT_OP BIN_ONES_COMPLEMENT_OP UNARY_PLUS ARITHMETIC_POW_OP  
-%nonassoc CLOSE_ROUND_BRACKET
+%nonassoc OPEN_ROUND_BRACKET CLOSE_ROUND_BRACKET
 
 %%
 program: stmt_list  { puts("program"); }
 
-expr: INTEGER_NUMBER { puts("integer"); }
-    | FLOAT_NUMBER   { puts("float"); }
-    | STRING         { puts("string"); }
-    | NIL_KEYWORD    { puts("nil"); }
-    | TRUE_KEYWORD   { puts("true"); }
-    | FALSE_KEYWORD  { puts("false"); }
-    | LOGICAL_NOT_OP expr { puts("LOGICAL_NOT_OP"); }
-    | BIN_ONES_COMPLEMENT_OP expr { puts("BIN_ONES_COMPLEMENT_OP"); }
-    | ARITHMETIC_PLUS_OP expr %prec UNARY_PLUS { puts("unary plus"); }
-    | expr ARITHMETIC_POW_OP expr { puts("pow"); }
-    | ARITHMETIC_MINUS_OP expr %prec UNARY_MINUS  { puts("unary minus"); }
-    | expr ARITHMETIC_MUL_OP expr  { puts("mul"); }
-    | expr ARITHMETIC_DIV_OP expr { puts("div"); }
-    | expr ARITHMETIC_MOD_OP expr  { puts("mod"); }
-    | expr ARITHMETIC_PLUS_OP expr { puts("plus"); }
-    | expr ARITHMETIC_MINUS_OP expr { puts("minus"); }
-    | expr BIN_LEFT_SHIFT_OP expr  { puts("left shift"); }
-    | expr BIN_RIGHT_SHIFT_OP expr { puts("right shift"); }
-    | expr BIN_AND_OP expr { puts("bin and"); }
-    | expr BIN_OR_OP expr   { puts("bin or"); }
-    | expr BIN_XOR_OP expr  { puts("bin xor"); }
-    | expr GREATER_OP expr  { puts(" > "); }
-    | expr LESS_OP expr      { puts(" < "); }
-    | expr GREATER_OR_EQL_OP expr  { puts(" >= "); }
-    | expr LESS_OR_EQL_OP expr      { puts(" <= "); }
-    | expr COMB_COMPRASION_OP expr   { puts(" COMB_COMPRASION_OP "); }
-    | expr EQL_OP expr          { puts(" EQL_OP "); }
-    | expr CASE_EQL_OP expr     { puts(" CASE_EQL_OP "); }
-    | expr NOT_EQL_OP expr      { puts("NOT_EQL_OP"); }
-    | expr LOGICAL_AND_OP expr  { puts("LOGICAL_AND_OP"); }
-    | expr LOGICAL_OR_OP expr   { puts("LOGICAL_OR_OP"); }
-    | expr INCLUSIVE_RANGE_OP expr  { puts("INCLUSIVE_RANGE_OP"); }
-    | expr EXCLUSIVE_RANGE_OP expr  { puts("EXCLUSIVE_RANGE_OP"); }
-    | expr ASSIGN_OP expr           { puts("assign"); }
-    | expr MOD_ASSIGN_OP expr               { puts("MOD_ASSIGN_OP"); }
-    | expr DIV_ASSIGN_OP expr       { puts("DIV_ASSIGN_OP"); }
-    | expr SUB_ASSIGN_OP expr        { puts("SUB_ASSIGN_OP"); }
-    | expr ADD_ASSIGN_OP expr         { puts("SUB_ASSIGN_OP"); }
-    | expr MUL_ASSIGN_OP expr           { puts("MUL_ASSIGN_OP"); }
-    | expr POW_ASSIGN_OP expr       { puts("POW_ASSIGN_OP"); }
-    | DEFINED_KEYWORD expr          { puts("DEFINED_KEYWORD"); }
-    | NOT_KEYWORD expr               { puts("NOT_KEYWORD"); }
-    | expr AND_KEYWORD expr         { puts("AND_KEYWORD"); }
-    | expr OR_KEYWORD expr          { puts("OR_KEYWORD"); }
-    | OPEN_ROUND_BRACKET expr CLOSE_ROUND_BRACKET    { puts(" expr in round brackets "); }
-	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET     { puts(" expr in square brackets "); }
-    | method_call_stmt                       { puts("method call"); }
-    | VAR_METHOD_NAME  { puts("var"); }     
-    | INSTANCE_VAR_NAME     { puts("instance var"); }
+expr: INTEGER_NUMBER { $$=create_const_integer_expr(Integer, $1); /* puts("integer"); */ }
+    | FLOAT_NUMBER { $$=create_const_float_expr($1); /* puts("float"); */}
+    | STRING { $$=create_const_string_expr(String, $1); /* puts("string"); */ }
+    | NIL_KEYWORD { puts("nil"); }
+    | TRUE_KEYWORD { $$=create_const_integer_expr(Boolean, 1); /* puts("true"); */ }
+    | FALSE_KEYWORD { $$=create_const_integer_expr(Boolean, 0); /* puts("false"); */ }
+    | LOGICAL_NOT_OP expr { $$=create_op_expr(logical_not, $2, 0); /* puts("LOGICAL_NOT_OP"); */ }
+    | BIN_ONES_COMPLEMENT_OP expr { $$=create_op_expr(bin_ones_complement, $2, 0); /* puts("BIN_ONES_COMPLEMENT_OP"); */ }
+    | ARITHMETIC_PLUS_OP expr %prec UNARY_PLUS { $$=create_op_expr(unary_plus, $2, 0); /* puts("unary plus"); */ }
+    | expr ARITHMETIC_POW_OP expr {  $$=create_op_expr(pow, $1, $3); /*  puts("pow"); */ }
+    | ARITHMETIC_MINUS_OP expr %prec UNARY_MINUS { $$=create_op_expr(unary_minus, $2, 0); /*  puts("unary minus"); */ }
+    | expr ARITHMETIC_MUL_OP expr { $$=create_op_expr(mul, $1, $3); /* puts("mul"); */ }
+    | expr ARITHMETIC_DIV_OP expr {  $$=create_op_expr(div, $1, $3); /* puts("div"); */ }
+    | expr ARITHMETIC_MOD_OP expr {  $$=create_op_expr(mod, $1, $3); /* puts("mod"); */ }
+    | expr ARITHMETIC_PLUS_OP expr {  $$=create_op_expr(plus, $1, $3); /* puts("plus"); */ }
+    | expr ARITHMETIC_MINUS_OP expr { $$=create_op_expr(minus, $1, $3); /* puts("minus"); */ }
+    | expr BIN_LEFT_SHIFT_OP expr { $$=create_op_expr(bin_left_shift, $1, $3); /* puts("left shift"); */ }
+    | expr BIN_RIGHT_SHIFT_OP expr { $$=create_op_expr(bin_right_shift, $1, $3); /* puts("right shift"); */ }
+    | expr BIN_AND_OP expr { $$=create_op_expr(bin_and_op, $1, $3); /* puts("bin and"); */ }
+    | expr BIN_OR_OP expr { $$=create_op_expr(bin_or_op, $1, $3); /* puts("bin or"); */ }
+    | expr BIN_XOR_OP expr { $$=create_op_expr(bin_xor_op, $1, $3); /* puts("bin xor"); */ }
+    | expr GREATER_OP expr { $$=create_op_expr(greater, $1, $3); /* puts(" > "); */ }
+    | expr LESS_OP expr { $$=create_op_expr(less, $1, $3); /* puts(" < "); */ }
+    | expr GREATER_OR_EQL_OP expr { $$=create_op_expr(greater_eql, $1, $3); /* puts(" >= "); */ }
+    | expr LESS_OR_EQL_OP expr { $$=create_op_expr(less_eql, $1, $3); /* puts(" <= "); */ }
+    | expr COMB_COMPRASION_OP expr { $$=create_op_expr(comb_comprassion, $1, $3); /* puts(" COMB_COMPRASION_OP "); */ }
+    | expr EQL_OP expr { $$=create_op_expr(equal, $1, $3); /* puts(" EQL_OP "); */ }
+    | expr CASE_EQL_OP expr {  $$=create_op_expr(case_equal, $1, $3); /* puts(" CASE_EQL_OP "); */ }
+    | expr NOT_EQL_OP expr { $$=create_op_expr(not_equal, $1, $3); /* puts("NOT_EQL_OP"); */ }
+    | expr LOGICAL_AND_OP expr { $$=create_op_expr(logical_and, $1, $3); /* puts("LOGICAL_AND_OP"); */ }
+    | expr LOGICAL_OR_OP expr { $$=create_op_expr(logical_or, $1, $3); /* puts("LOGICAL_OR_OP");  */ }
+    | expr INCLUSIVE_RANGE_OP expr { $$=create_op_expr(inclusive_range, $1, $3); /* puts("INCLUSIVE_RANGE_OP"); */ }
+    | expr EXCLUSIVE_RANGE_OP expr { $$=create_op_expr(exclusive_range, $1, $3); /* puts("EXCLUSIVE_RANGE_OP"); */ }
+    | expr ASSIGN_OP expr { $$=create_op_expr(assign, $1, $3); /* puts("assign"); */ }
+    | expr MOD_ASSIGN_OP expr { $$=create_op_expr(mod_assign, $1, $3); /* puts("MOD_ASSIGN_OP"); */ }
+    | expr DIV_ASSIGN_OP expr { $$=create_op_expr(div_assign, $1, $3); /* puts("DIV_ASSIGN_OP"); */ }
+    | expr SUB_ASSIGN_OP expr { $$=create_op_expr(sub_assign, $1, $3); /* puts("SUB_ASSIGN_OP"); */ }
+    | expr ADD_ASSIGN_OP expr { $$=create_op_expr(add_assign, $1, $3); /* puts("SUB_ASSIGN_OP"); */ }
+    | expr MUL_ASSIGN_OP expr { $$=create_op_expr(mul_assign, $1, $3); /* puts("MUL_ASSIGN_OP"); */ }
+    | expr POW_ASSIGN_OP expr { $$=create_op_expr(pow_assign, $1, $3); /* puts("POW_ASSIGN_OP"); */ }
+    | expr UNTIL_KEYWORD expr {}  
+    | expr WHILE_KEYWORD expr {}  
+    | DEFINED_KEYWORD expr { $$=create_op_expr(defined, $2, 0); /* puts("DEFINED_KEYWORD"); */ }
+    | NOT_KEYWORD expr { $$=create_op_expr(not_keyword, $2, 0); /* puts("NOT_KEYWORD");  */ }
+    | expr AND_KEYWORD expr { $$=create_op_expr(and_keyword, $1, $3); /* puts("AND_KEYWORD"); */ }
+    | expr OR_KEYWORD expr { $$=create_op_expr(or_keyword, $1, $3); /* puts("OR_KEYWORD"); */ }
+    | OPEN_ROUND_BRACKET expr CLOSE_ROUND_BRACKET { $$=$2; /* puts(" expr in round brackets "); */ }
+	| OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET { puts(" expr in square brackets "); }
+    | VAR_METHOD_NAME OPEN_ROUND_BRACKET method_call_param_list CLOSE_ROUND_BRACKET { puts("method call"); /*!!!! ВОПРОС !!!!*/ }
+    | VAR_METHOD_NAME { $$=create_const_string_expr(var_or_method, $1); /* puts("var"); */ }     
+    | INSTANCE_VAR_NAME { $$=create_const_string_expr(instance_var, $1); /* puts("instance var"); */ }
     ;
 
-new_lines: NEW_LINE_SYMBOL
-    | new_lines NEW_LINE_SYMBOL
-    ;
-
-semicolons: SEMICOLON_SYMBOL
-    | semicolons SEMICOLON_SYMBOL
-    ;
-
-stmt_end: new_lines
-    | semicolons
-    ;
-
-stmt_ends: stmt_end
-    | stmt_ends stmt_end
+stmt_ends: SEMICOLON_SYMBOL
+    | NEW_LINE_SYMBOL
+    | SEMICOLON_SYMBOL stmt_ends
+    | NEW_LINE_SYMBOL stmt_ends
     ;
 
 stmt: expr stmt_ends { puts("stmt"); }
@@ -213,12 +232,8 @@ stmt: expr stmt_ends { puts("stmt"); }
     | for_stmt stmt_ends
     | while_stmt         { puts("while stmt"); }
     | while_stmt stmt_ends       { puts("while stmt"); }
-    | while_modifier_stmt /* maybe binary opertaor with N/A association */ { puts("while modifer stmt"); }
-    | while_modifier_stmt stmt_ends /* maybe binary opertaor with N/A association */ { puts("while modifer stmt"); }
     | until_stmt    { puts("until stmt"); }
     | until_stmt stmt_ends   { puts("until stmt"); }
-    | until_modifier_stmt /* maybe binary opertaor with N/A association */ { puts("until modifer stmt"); }
-    | until_modifier_stmt stmt_ends /* maybe binary opertaor with N/A association */ { puts("until modifer stmt"); }
     | def_method_stmt   { puts("def method"); }
     | def_method_stmt stmt_ends { puts("def method"); }
     ;
@@ -270,15 +285,9 @@ while_stmt: WHILE_KEYWORD expr stmt_ends stmt_list END_KEYWORD
     | WHILE_KEYWORD expr DO_KEYWORD stmt_ends stmt_list END_KEYWORD
 	;
 
-while_modifier_stmt: expr WHILE_KEYWORD expr
-	;
-
 until_stmt: UNTIL_KEYWORD expr stmt_ends stmt_list END_KEYWORD
 	| UNTIL_KEYWORD expr DO_KEYWORD stmt_list END_KEYWORD
     | UNTIL_KEYWORD expr DO_KEYWORD stmt_ends stmt_list END_KEYWORD
-	;
-
-until_modifier_stmt: expr UNTIL_KEYWORD expr
 	;
 
 method_param: VAR_METHOD_NAME
@@ -305,10 +314,48 @@ method_call_param_list_not_empty: expr
 	| method_call_param_list_not_empty COMMA_SYMBOL expr
 	;
 
-method_call_stmt: VAR_METHOD_NAME OPEN_ROUND_BRACKET method_call_param_list CLOSE_ROUND_BRACKET
-	; /* Есть еще вариант без скобочек, не знаю, есть ли смысл его рассматривать */
-
 %%
+
+struct expr_struct * create_const_integer_expr(enum expr_type type, int val) {
+    struct expr_struct * result = (struct expr_struct *) malloc(sizeof(struct expr_struct));
+    result->type = type;
+    result->int_val = val;
+    return result;
+}
+
+struct expr_struct * create_const_float_expr(float val) {
+    struct expr_struct * result = (struct expr_struct *) malloc(sizeof(struct expr_struct));
+    result->type = Float ;
+    result->float_val = val;
+    return result;
+}
+
+struct expr_struct * create_const_string_expr(enum expr_type type, char * val) {
+    struct expr_struct * result = (struct expr_struct *) malloc(sizeof(struct expr_struct));
+    result->type = type;
+    result->str_val = val;
+    return result;
+}
+
+struct expr_struct * create_op_expr(enum expr_type type, struct expr_struct * left, struct expr_struct * right) {
+    struct expr_struct * result = (struct expr_struct *) malloc(sizeof(struct expr_struct));
+    result->type = type;
+    result->left = left;
+    result->right = right;
+}
+
+struct stmt_list_struct * create_stmt_list(struct stmt_struct * val) {
+    struct stmt_list_struct * res = (struct stmt_list_struct *) malloc(sizeof(struct stmt_list_struct));
+    res->first = val;
+    res->last = val;
+    return res;
+}
+
+struct stmt_list_struct * add_to_stmt_list(struct stmt_list_struct * list, struct stmt_struct * val) {
+    list->last->next = val;
+    list->last = val;
+    return list;
+}
 
 void main(int argc, char **argv ){
 	yyin = fopen(argv[1], "r" );

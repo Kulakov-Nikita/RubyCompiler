@@ -153,7 +153,25 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 24 "Grammar.y"
+
+    int int_un;
+    float float_un;
+    char * string_un;
+    char * var_name_un;
+    char * instance_var_name_un;
+    char * class_name_un;
+    char * class_var_name_un;
+    struct expr_struct * expr_un; 
+    struct stmt_struct * stmt_un;
+    struct stmt_list_struct * stmt_list_un;
+
+#line 172 "Grammar.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
