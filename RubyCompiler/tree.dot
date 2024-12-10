@@ -1,0 +1,15 @@
+digraph G {
+Id00939AB8 [label="program"]
+Id00939A30 [label="stmt"]
+Id009399E0 [label="="]
+Id00939908 [label="var or method"]
+IdVal00939908 [label="a"]
+Id00939908->IdVal00939908
+Id00939990 [label="STRING"]
+IdVal00939990 [label="asdr"]
+Id00939990->IdVal00939990
+Id009399E0->Id00939908
+Id009399E0->Id00939990
+Id00939A30->Id009399E0
+Id00939AB8->Id00939A30
+}
