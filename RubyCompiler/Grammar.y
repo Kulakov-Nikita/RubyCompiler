@@ -231,7 +231,7 @@ expr: INTEGER_NUMBER { $$=create_const_integer_expr(Integer, $1); /* puts("integ
     | expr AND_KEYWORD expr { $$=create_op_expr(and_keyword, $1, $3); /* puts("AND_KEYWORD"); */ }
     | expr OR_KEYWORD expr { $$=create_op_expr(or_keyword, $1, $3); /* puts("OR_KEYWORD"); */ }
     | OPEN_ROUND_BRACKET expr CLOSE_ROUND_BRACKET { $$=$2; /* puts(" expr in round brackets "); */ }
-	| expr OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET { puts(" expr in square brackets "); }
+	| expr OPEN_SQUARE_BRACKET expr CLOSE_SQUARE_BRACKET { $$=create_op_expr(member_access, $1, $3); puts(" expr in square brackets "); }
     | OPEN_SQUARE_BRACKET expr_list CLOSE_SQUARE_BRACKET { $$=create_array_struct($2);puts(" expr list"); }
     | VAR_METHOD_NAME OPEN_ROUND_BRACKET expr_list CLOSE_ROUND_BRACKET { $$=create_method_call_expr($1, $3); puts("method call");}
     | VAR_METHOD_NAME { $$=create_const_string_expr(var_or_method, $1); /* puts("var"); */ }     
@@ -259,6 +259,8 @@ stmt: expr stmt_ends { $$=create_expr_stmt($1); puts("stmt"); }
     | while_stmt stmt_ends       { $$=$1; puts("while stmt"); }
     | until_stmt    { $$=$1; puts("until stmt"); }
     | until_stmt stmt_ends   { $$=$1; puts("until stmt"); }
+    | RETURN_KEYWORD expr stmt_ends { $$=create_return_stmt($2); puts("return with expr"); /* TODO: implement */}
+    | RETURN_KEYWORD stmt_ends { $$=create_return_stmt(0); puts("return"); /* TODO: implement */}
     | def_method_stmt   { $$=$1; puts("def method"); }
     | def_method_stmt stmt_ends { $$=$1; puts("def method"); }
     ;
