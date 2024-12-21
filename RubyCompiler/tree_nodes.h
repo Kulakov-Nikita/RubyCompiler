@@ -49,7 +49,9 @@ enum expr_type {
 	while_op,
 	method_call,
 	array,
-	member_access
+	member_access,
+	field_call,
+	object_method_call
 };
 
 struct expr_struct {
