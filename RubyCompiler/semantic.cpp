@@ -250,20 +250,6 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		existsId(clazz, method, expr->right);
 		break;
 	case pow_:
-		clazz->pushOrFindMethodRef("__pow__", "(L__BASE__;)L__BASE__;");
-		existsId(clazz, method, expr->left);
-		existsId(clazz, method, expr->right);
-		break;
-	case logical_and:
-		clazz->pushOrFindMethodRef("__logical_and__", "(L__BASE__;)L__BASE__;");
-		existsId(clazz, method, expr->left);
-		existsId(clazz, method, expr->right);
-		break;
-	case logical_or:
-		clazz->pushOrFindMethodRef("__logical_or__", "(L__BASE__;)L__BASE__;");
-		existsId(clazz, method, expr->left);
-		existsId(clazz, method, expr->right);
-		break;
 	case bin_left_shift:
 	case bin_right_shift:
 	case bin_and_op:
@@ -271,6 +257,8 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case bin_xor_op:
 	case comb_comprassion:
 	case case_equal:
+	case logical_and:
+	case logical_or:
 	case inclusive_range:
 	case exclusive_range:
 	case and_keyword:
@@ -285,6 +273,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 			existsIds(clazz, method, expr->list);
 		}
 		existsMethod(expr->str_val);
+		clazz->pushOrFindMethodRef(expr->str_val, method_descriptor(count_exprs(expr->list)));
 		break;
 	case array:
 		if (expr->list != 0) {
