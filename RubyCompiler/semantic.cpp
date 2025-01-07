@@ -5,10 +5,17 @@ void fillTable(program_struct* program) {
 	clazz->name = "__PROGRAM__";
 	clazzesList[clazz->name] = clazz;
 	clazz->pushConstant(Constant::Utf8("Code"));
-	clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(clazz->name))));
+	clazz->number = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(clazz->name))));
+
+	int parent_class_name = clazz->pushConstant(Constant::Utf8("Ljava/lang/Object;"));
+	clazz->parend_number = clazz->pushConstant(Constant::Class(parent_class_name));
 
 	Method* mainMethod = new Method();
 	mainMethod->name = "main";
+	mainMethod->nameNumber = clazz->pushConstant(Constant::Utf8(mainMethod->name));
+	mainMethod->descriptorNumber = clazz->pushConstant(Constant::Utf8("([Ljava/lang/String;)V"));
+	mainMethod->number = clazz->pushOrFindMethodRef(clazz->name , mainMethod->name, "([Ljava/lang/String;)V");
+	mainMethod->isStatic = true;
 	clazz->methods[mainMethod->name] = mainMethod;
 	mainMethod->body = 0;
 
@@ -37,8 +44,16 @@ void fillTable(program_struct* program) {
 			c = c->next;	
 		}
 	}
-	//TODO: Deafult constructor...
-	clazz->pushConstant(Constant::Utf8("<init>"));
+
+	Method* initMethod = new Method();
+	initMethod->name = "<init>";
+	initMethod->nameNumber = clazz->pushConstant(Constant::Utf8(initMethod->name));
+	initMethod->descriptorNumber = clazz->pushConstant(Constant::Utf8("()V"));
+	initMethod->local_variables.push_back("this");
+	initMethod->body = 0;
+	initMethod->number = clazz->pushOrFindMethodRef(clazz->name, initMethod->name, "()V");
+	initMethod->self_method_ref = clazz->pushOrFindMethodRef("java/lang/Object", initMethod->name, "()V");
+	clazz->methods[initMethod->name] = initMethod;
 }
 
 void fillTable(class_declaration_struct* class_decl) {
