@@ -1,27 +1,53 @@
 digraph G {
-Id012E4788 [label="program"]
-Id012E3D90 [label="stmt"]
-Id012E3D30 [label="="]
-Id012D51E8 [label="var or method\n localnum = 0"]
-IdVal012D51E8 [label="a"]
-Id012D51E8->IdVal012D51E8
-Id012E3CD0 [label="BOOLEAN\n mref = #16\n val_id = #10"]
-IdVal012E3CD0 [label="false"]
-Id012E3CD0->IdVal012E3CD0
-Id012E3D30->Id012D51E8
-Id012E3D30->Id012E3CD0
-Id012E3D90->Id012E3D30
-Id012E4788->Id012E3D90
-Id012E3FB8 [label="stmt"]
-Id012E3EE0 [label="="]
-Id012E3E20 [label="var or method\n localnum = 1"]
-IdVal012E3E20 [label="b"]
-Id012E3E20->IdVal012E3E20
-Id012E3E80 [label="INT\n mref = #20\n val_id = #17"]
-IdVal012E3E80 [label="1"]
-Id012E3E80->IdVal012E3E80
-Id012E3EE0->Id012E3E20
-Id012E3EE0->Id012E3E80
-Id012E3FB8->Id012E3EE0
-Id012E4788->Id012E3FB8
+Id014250E0 [label="program"]
+Id01424488 [label="stmt"]
+Id01424418 [label="="]
+Id014241E8 [label="var or method\n localnum = 1"]
+IdVal014241E8 [label="a"]
+Id014241E8->IdVal014241E8
+Id014243A8 [label = "array"]
+Id01424258 [label="INT\n mref = #30\n val_id = #27"]
+IdVal01424258 [label="1"]
+Id01424258->IdVal01424258
+Id014243A8->Id01424258
+Id014242C8 [label="STRING\n mref = #35\n val_id = #32"]
+IdVal014242C8 [label="123"]
+Id014242C8->IdVal014242C8
+Id014243A8->Id014242C8
+Id01424338 [label="BOOLEAN\n mref = #38\n val_id = #27"]
+IdVal01424338 [label="true"]
+Id01424338->IdVal01424338
+Id014243A8->Id01424338
+Id01424418->Id014241E8
+Id01424418->Id014243A8
+Id01424488->Id01424418
+Id014250E0->Id01424488
+Id01424DB0 [label="stmt"]
+Id014246D8 [label="[]=\nmref = #42"]
+Id01424518 [label="var or method\n localnum = 1"]
+IdVal01424518 [label="a"]
+Id01424518->IdVal01424518
+Id014246D8->Id01424518 [label = "array"]
+Id01424588 [label="INT\n mref = #30\n val_id = #27"]
+IdVal01424588 [label="1"]
+Id01424588->IdVal01424588
+Id014246D8->Id01424588 [label = "index"]
+Id01424668 [label="INT\n mref = #30\n val_id = #43"]
+IdVal01424668 [label="2"]
+Id01424668->IdVal01424668
+Id014246D8->Id01424668 [label = "val"]
+Id01424DB0->Id014246D8
+Id014250E0->Id01424DB0
+Id01424AE0 [label="stmt"]
+Id01425030 [label="method_call\n mref = #47"]
+IdMethodNameVal01425030 [label="println"]
+Id01425030->IdMethodNameVal01425030 [label="name"]
+Id0141EBF8 [label="params"]
+Id01425030->Id0141EBF8
+Id01424FC0 [label="var or method\n localnum = 1"]
+IdVal01424FC0 [label="a"]
+Id01424FC0->IdVal01424FC0
+Id0141EBF8->Id01424FC0
+Id01424AE0->Id01425030
+Id014250E0->Id01424AE0
 }
