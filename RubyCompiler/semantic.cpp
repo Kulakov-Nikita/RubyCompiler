@@ -187,6 +187,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case Integer:
 		expr->value_id = clazz->pushConstant(Constant::Integer(expr->int_val));
 		expr->id = clazz->pushOrFindMethodRef("__BASE__", "<init>", "(I)V");
+		expr->class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
 		break;
 	case Boolean:
 		expr->value_id = clazz->pushConstant(Constant::Integer(expr->int_val));
@@ -199,6 +200,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case String:
 		expr->value_id = clazz->pushConstant(Constant::String(clazz->pushConstant(Constant::Utf8(expr->str_val))));
 		expr->id = clazz->pushOrFindMethodRef("__BASE__", "<init>", "(Ljava/lang/String;)V");
+		expr->class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
 		break;
 	case var_or_method:
 		if (contains(method->local_variables, expr->str_val)) {
