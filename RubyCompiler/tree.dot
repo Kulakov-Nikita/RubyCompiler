@@ -1,53 +1,48 @@
 digraph G {
-Id014250E0 [label="program"]
-Id01424488 [label="stmt"]
-Id01424418 [label="="]
-Id014241E8 [label="var or method\n localnum = 1"]
-IdVal014241E8 [label="a"]
-Id014241E8->IdVal014241E8
-Id014243A8 [label = "array"]
-Id01424258 [label="INT\n mref = #30\n val_id = #27"]
-IdVal01424258 [label="1"]
-Id01424258->IdVal01424258
-Id014243A8->Id01424258
-Id014242C8 [label="STRING\n mref = #35\n val_id = #32"]
-IdVal014242C8 [label="123"]
-Id014242C8->IdVal014242C8
-Id014243A8->Id014242C8
-Id01424338 [label="BOOLEAN\n mref = #38\n val_id = #27"]
-IdVal01424338 [label="true"]
-Id01424338->IdVal01424338
-Id014243A8->Id01424338
-Id01424418->Id014241E8
-Id01424418->Id014243A8
-Id01424488->Id01424418
-Id014250E0->Id01424488
-Id01424DB0 [label="stmt"]
-Id014246D8 [label="[]=\nmref = #42"]
-Id01424518 [label="var or method\n localnum = 1"]
-IdVal01424518 [label="a"]
-Id01424518->IdVal01424518
-Id014246D8->Id01424518 [label = "array"]
-Id01424588 [label="INT\n mref = #30\n val_id = #27"]
-IdVal01424588 [label="1"]
-Id01424588->IdVal01424588
-Id014246D8->Id01424588 [label = "index"]
-Id01424668 [label="INT\n mref = #30\n val_id = #43"]
-IdVal01424668 [label="2"]
-Id01424668->IdVal01424668
-Id014246D8->Id01424668 [label = "val"]
-Id01424DB0->Id014246D8
-Id014250E0->Id01424DB0
-Id01424AE0 [label="stmt"]
-Id01425030 [label="method_call\n mref = #47"]
-IdMethodNameVal01425030 [label="println"]
-Id01425030->IdMethodNameVal01425030 [label="name"]
-Id0141EBF8 [label="params"]
-Id01425030->Id0141EBF8
-Id01424FC0 [label="var or method\n localnum = 1"]
-IdVal01424FC0 [label="a"]
-Id01424FC0->IdVal01424FC0
-Id0141EBF8->Id01424FC0
-Id01424AE0->Id01425030
-Id014250E0->Id01424AE0
+Id000001fc143262f0 [label="program"]
+Id000001fc143018f0 [label="stmt"]
+Id000001fc14301860 [label="="]
+Id000001fc14301760 [label="var or method\n localnum = 1"]
+IdVal000001fc14301760 [label="str"]
+Id000001fc14301760->IdVal000001fc14301760
+Id000001fc143017f0 [label="STRING\n mref = #17\n val_id = #11"]
+IdVal000001fc143017f0 [label="Hello"]
+Id000001fc143017f0->IdVal000001fc143017f0
+Id000001fc14301860->Id000001fc14301760
+Id000001fc14301860->Id000001fc143017f0
+Id000001fc143018f0->Id000001fc14301860
+Id000001fc143262f0->Id000001fc143018f0
+Id000001fc14301bb0 [label="stmt"]
+Id000001fc14301b20 [label="method_call\n mref = #21"]
+IdMethodNameVal000001fc14301b20 [label="println"]
+Id000001fc14301b20->IdMethodNameVal000001fc14301b20 [label="name"]
+Id000001fc14301b00 [label="params"]
+Id000001fc14301b20->Id000001fc14301b00
+Id000001fc14301a90 [label="*\n mref = #25"]
+Id000001fc143019b0 [label="var or method\n localnum = 1"]
+IdVal000001fc143019b0 [label="str"]
+Id000001fc143019b0->IdVal000001fc143019b0
+Id000001fc14301a20 [label="INT\n mref = #29\n val_id = #26"]
+IdVal000001fc14301a20 [label="3"]
+Id000001fc14301a20->IdVal000001fc14301a20
+Id000001fc14301a90->Id000001fc143019b0
+Id000001fc14301a90->Id000001fc14301a20
+Id000001fc14301b00->Id000001fc14301a90
+Id000001fc14301bb0->Id000001fc14301b20
+Id000001fc143262f0->Id000001fc14301bb0
+Id000001fc14326270 [label="stmt"]
+Id000001fc14326200 [label="method_call\n mref = #21"]
+IdMethodNameVal000001fc14326200 [label="println"]
+Id000001fc14326200->IdMethodNameVal000001fc14326200 [label="name"]
+Id000001fc143261e0 [label="params"]
+Id000001fc14326200->Id000001fc143261e0
+Id000001fc14326170 [label="."]Id000001fc143260e0 [label="var or method\n localnum = 1"]
+IdVal000001fc143260e0 [label="str"]
+Id000001fc143260e0->IdVal000001fc143260e0
+Id000001fc14326170->Id000001fc143260e0 [label = "object"]
+Id000001fc14326150 [label = "upcase"]
+Id000001fc14326170->Id000001fc14326150 [label = "field"]
+Id000001fc143261e0->Id000001fc14326170
+Id000001fc14326270->Id000001fc14326200
+Id000001fc143262f0->Id000001fc14326270
 }
