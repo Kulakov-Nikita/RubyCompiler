@@ -6,6 +6,7 @@
 struct expr_struct* create_const_integer_expr(enum expr_type type, int val);
 struct expr_struct* create_const_float_expr(float val);
 struct expr_struct* create_const_string_expr(enum expr_type type, char* val);
+struct expr_struct* create_super_expr(enum expr_type type);
 struct expr_struct* create_op_expr(enum expr_type type, struct expr_struct* left, struct expr_struct* right);
 struct expr_struct* create_method_call_expr(char* method_name, struct expr_list_struct* list);
 struct expr_struct* create_field_call_expr(struct expr_struct* left, char* right);

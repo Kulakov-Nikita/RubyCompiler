@@ -34,6 +34,9 @@ struct expr_struct* create_const_string_expr(enum expr_type type, char* val) {
 }
 
 struct expr_struct* create_op_expr(enum expr_type type, struct expr_struct* left, struct expr_struct* right) {
+    if(type == and_keyword)type = logical_and;
+    if(type == or_keyword)type = logical_or;
+    if(type == not_keyword)type = logical_not;
     struct expr_struct* result = (struct expr_struct*)malloc(sizeof(struct expr_struct));
     result->list = 0;
     result->type = type;
