@@ -1,0 +1,10 @@
+def hello()
+println("Hello world")
+end
+
+def sum(a, b)
+return a + b
+end
+
+hello()
+print(sum(1,2))

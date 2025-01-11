@@ -1,0 +1,12 @@
+class Test
+  def func()
+    print("Hello")
+  end
+  
+  def get_new()
+    return Test.new
+  end
+end
+
+test = Test.new
+test.get_new().func()

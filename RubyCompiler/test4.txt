@@ -1,0 +1,31 @@
+if true
+  println("if-esle correct")
+else
+  println("if-esle error")
+end
+
+if false
+  println("if-esle_2 error")
+else
+  println("if-esle_2 correct")
+end
+
+if false
+  println("if-elif-esle error_1")
+elsif true
+  println("if-elif-esle correct")
+else
+  println("if-elif-esle error_2")
+end
+
+=begin
+unless false
+  println("unless correct")
+end
+
+unless true
+  println("unless error")
+else
+  println("unless correct")
+end
+=end
