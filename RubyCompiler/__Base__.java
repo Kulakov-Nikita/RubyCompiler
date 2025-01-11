@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class __BASE__ {
@@ -153,10 +154,10 @@ public class __BASE__ {
             return new __BASE__(arrayList);
         }
 
-        if (this.__type == ARRAY && o.__type == STRING) {
+       if (this.__type == ARRAY && o.__type == STRING) {
             String str = this.__aVal.get(0).toString();
-            for (__BASE__ base__ : this.__aVal) {
-                str += (new __BASE__(o.__sVal)).toString() + base__.toString();
+            for (int i = 1; i < this.__aVal.size(); i++) {
+                str += (new __BASE__(o.__sVal)).toString() + this.__aVal.get(i).toString();
             }
             return new __BASE__(str);
         }
@@ -342,6 +343,7 @@ public class __BASE__ {
         if(index.__type != INTEGER) throw new IllegalArgumentException("index must be integer");
 
         if(this.__type == ARRAY) {
+            if(index.__iVal >= this.__aVal.size()) return new __BASE__();
             return this.__aVal.get(index.__iVal);
         }
 
@@ -352,7 +354,17 @@ public class __BASE__ {
         if(index.__type != INTEGER) throw new IllegalArgumentException("index must be integer");
 
         if(this.__type == ARRAY) {
-            this.__aVal.set(index.__iVal, value);
+            if(index.__iVal >= this.__aVal.size()) {
+                ArrayList<__BASE__> a = new ArrayList<>();
+                for(int i = 0; i < index.__iVal; ++i) {
+                    a.add(__member_access__(new __BASE__(i)));
+                }
+                a.add(value);
+                this.__aVal = a;
+            }else {
+                this.__aVal.set(index.__iVal, value);
+            }
+
             return value;
         }
 
@@ -388,6 +400,95 @@ public class __BASE__ {
         System.out.println(value.toString());
     }
 
+    public static __BASE__  __gets__() {
+        Scanner scanner = new Scanner(System.in);
+        return new __BASE__(scanner.nextLine());
+    }
+
+    public __BASE__ __to_i__() {
+        if (this.__type == INTEGER)
+            return new __BASE__(this.__iVal);
+        if (this.__type == FLOAT)
+            return new __BASE__((int)this.__fVal);
+        if (this.__type == STRING) {
+            String str = "";
+            int value = 0;
+            for (int i = 0; i < this.__sVal.length() && Character.isDigit(this.__sVal.charAt(i)); i++) {
+                str += this.__sVal.charAt(i);
+            }
+            if (!str.isEmpty())
+                value = Integer.parseInt(str);
+            return new __BASE__(value);
+        }
+        throw new UnsupportedOperationException("to_i() isn't support operation for type: " + this.__type);
+    }
+
+    public __BASE__ __to_f__() {
+        if (this.__type == INTEGER)
+            return new __BASE__((float)this.__iVal);
+        if (this.__type == FLOAT)
+            return new __BASE__(this.__fVal);
+        if (this.__type == STRING) {
+            String str = "";
+            int value = 0;
+            for (int i = 0; i < this.__sVal.length() && (Character.isDigit(this.__sVal.charAt(i)) || this.__sVal.charAt(i) == '.'); i++) {
+                if (!str.contains("."))
+                    str += this.__sVal.charAt(i);
+                else
+                    return new __BASE__((float)value);
+            }
+            if (!str.isEmpty())
+                value = Integer.parseInt(str);
+            return new __BASE__((float)value);
+        }
+        throw new UnsupportedOperationException("to_f() isn't support operation for type: " + this.__type);
+    }
+
+    public __BASE__ __to_s__() {
+        return new __BASE__(this.toString());
+    }
+
+    public __BASE__ upcase()
+    {
+        if(this.__type != STRING){
+            throw new UnsupportedOperationException("upcase() isn't support operation for type: " + this.__type);
+        }
+        return new __BASE__(this.__sVal.toUpperCase());
+    }
+    public __BASE__ downcase()
+    {
+        if(this.__type != STRING){
+            throw new UnsupportedOperationException("downcase() isn't support operation for type: " + this.__type);
+        }
+        return new __BASE__(this.__sVal.toLowerCase());
+    }
+    public __BASE__ downcase()
+    {
+        if(this.__type != STRING){
+            throw new UnsupportedOperationException("downcase() isn't support operation for type: " + this.__type);
+        }
+        return new __BASE__(this.__sVal.toLowerCase());
+    }
+
+
+    public static __BASE__ __to_s__(__BASE__ value) {
+        return new __BASE__(value.toString());
+    }
+
+    public __BASE__ __split__() {
+        if (this.__type == STRING) {
+            String str = this.__sVal;
+            String[] strs = str.split(" ");
+            ArrayList<__BASE__> base__s = new ArrayList<>();
+
+            for (String s : strs) {
+                base__s.add(new __BASE__(s));
+            }
+            return new __BASE__(base__s);
+        }
+
+        throw new UnsupportedOperationException("split() isn't support operation for type: " + this.__type);
+    }
     @Override
     public boolean equals(Object obj) {
         __BASE__ o = (__BASE__) obj;
