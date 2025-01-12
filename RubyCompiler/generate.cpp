@@ -1,8 +1,11 @@
 #include "generate.h"
+#include <cstring>
+#pragma warning (disable : 4996)
 
-void generate(program_struct* program, const std::map<std::string, Clazz*>& clazzList) {
+void generate_java(program_struct* program, const std::map<std::string, Clazz*>& clazzList) {
 	for (auto clazz : clazzesList) {
-		freopen("__PROGRAM__.class", "wb", stdout);
+		// freopen("__PROGRAM__.class", "wb", stdout);
+		freopen((clazz.second->name + ".class").c_str(), "wb", stdout);
 		std::vector<char> len = intToBytes(clazz.second->constants.size() + 1);
 		// CAFEBABE
 		std::cout << (char)0xCA << (char)0xFE << (char)0xBA << (char)0xBE;
@@ -21,7 +24,7 @@ void generate(program_struct* program, const std::map<std::string, Clazz*>& claz
 		sort(constants_v.begin(), constants_v.end(), cmp);
 
 		for (auto i : constants_v) {
-			generate(i.first);
+			generate_java(i.first);
 		}
 
 		// Flags 
@@ -34,6 +37,7 @@ void generate(program_struct* program, const std::map<std::string, Clazz*>& claz
 		std::cout << bytes[2] << bytes[3];
 		// Interfaces table
 		std::cout << (char)0x00 << (char)0x00;
+		// Field count
 		std::cout << (char)0x00 << (char)0x00;
 		// methods count
 		bytes = intToBytes(clazz.second->methods.size());
@@ -68,7 +72,7 @@ void generate(program_struct* program, const std::map<std::string, Clazz*>& claz
 
 		for (auto i : clazz.second->methods) {
 			if (i.first != "<init>") {
-				generate(i.second);
+				generate_java(i.second);
 			}
 		}
 
@@ -77,7 +81,7 @@ void generate(program_struct* program, const std::map<std::string, Clazz*>& claz
 	}
 }
 
-void generate(Method* method) {
+void generate_java(Method* method) {
 	std::vector<char> bytes;
 	// public 
 	if (method->isStatic) {
@@ -116,11 +120,28 @@ void generate(Method* method) {
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!
 	if (method != 0 && method->body != 0) {
-		tmp_bytes = generate(method->body);
+		tmp_bytes = generate_java(method->body);
 		code_bytes.insert(code_bytes.end(), tmp_bytes.begin(), tmp_bytes.end());
 	}
 
-	code_bytes.push_back((char)Command::return_);
+	if (method->name == "main") {
+		code_bytes.push_back((char)Command::return_);
+	}
+	else {
+		if (code_bytes.back() != ((char)Command::areturn)) {
+			code_bytes.push_back((char)Command::new_);
+			tmp_bytes = intToBytes(method->nill_class_id);
+			code_bytes.push_back(tmp_bytes[2]);
+			code_bytes.push_back(tmp_bytes[3]);
+			code_bytes.push_back((char)Command::dup);
+			code_bytes.push_back((char)Command::invokespecial);
+			tmp_bytes = intToBytes(method->nill_constructor_mr);
+			code_bytes.push_back(tmp_bytes[2]);
+			code_bytes.push_back(tmp_bytes[3]);
+			code_bytes.push_back((char)Command::areturn);
+		}
+	}
+	
 
 	// size of code
 	tmp_bytes = intToBytes(code_bytes.size());
@@ -149,6 +170,128 @@ void generate(Method* method) {
 	for (auto i : result_bytes) {
 		std::cout << i;
 	}
+}
+
+std::vector<char> generate_java(until_stmt_struct* until_s) {
+	std::vector<char> resultCode = std::vector<char>();
+	std::vector<char> tmp = std::vector<char>();
+	std::vector<char> code = generate_java(until_s->body);
+
+	tmp = generate_java(until_s->condition);
+	resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+	resultCode.push_back((char)Command::getfield);
+	tmp = intToBytes(until_s->bool_field_mr);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.push_back((char)Command::ifne);
+	tmp = intToBytes(code.size() + 6);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.insert(resultCode.end(), code.begin(), code.end());
+	tmp = intToBytes(-1 * resultCode.size());
+	resultCode.push_back((char)Command::goto_);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	return resultCode;
+}
+
+std::vector<char> generate_java(while_stmt_struct* while_s) {
+	std::vector<char> resultCode = std::vector<char>();
+	std::vector<char> tmp = std::vector<char>();
+	std::vector<char> code = generate_java(while_s->body);
+	
+	tmp = generate_java(while_s->condition);
+	resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+	resultCode.push_back((char)Command::getfield);
+	tmp = intToBytes(while_s->bool_field_mr);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.push_back((char)Command::ifeq);
+	tmp = intToBytes(code.size() + 6);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.insert(resultCode.end(), code.begin(), code.end());
+	tmp = intToBytes(-1 * resultCode.size());
+	resultCode.push_back((char)Command::goto_);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	return resultCode;
+}
+
+std::vector<char> generate_java(if_stmt_struct* if_s) {
+	std::vector<char> resultCode = std::vector<char>();
+	std::vector<char> tmp = std::vector<char>();
+
+	std::vector<char> trueCondition = generate_java(if_s->if_branch->condition);
+	std::vector<char> trueBranch = generate_java(if_s->if_branch->body);
+	std::vector<char> elseBranch = std::vector<char>(); // generate(if_s->else_branch);
+
+	std::vector<std::vector<char>> elsifBodys = std::vector<std::vector<char>>();
+	std::vector<std::vector<char>> elsifConditions = std::vector<std::vector<char>>();
+
+	elsifConditions.push_back(trueCondition);
+	elsifBodys.push_back(trueBranch);
+
+	// fill elsif conditions and bodys
+	if (if_s->elsif_branches != 0) {
+		if_part_stmt_struct* c = if_s->elsif_branches->first;
+		while (c != 0) {
+			elsifConditions.push_back(generate_java(c->condition));
+			elsifBodys.push_back(generate_java(c->body));
+			c = c->next;
+		}
+	}
+
+	if (if_s->else_branch != 0) {
+		elseBranch = generate_java(if_s->else_branch);
+	}
+
+	resultCode.insert(resultCode.begin(), elseBranch.begin(), elseBranch.end());
+
+	for (int i = elsifConditions.size() - 1; i >= 0; --i) {
+		if (resultCode.size() != 0) {
+			elsifBodys[i].push_back((char)Command::goto_);
+			tmp = intToBytes(resultCode.size() + 3);
+			elsifBodys[i].push_back(tmp[2]);
+			elsifBodys[i].push_back(tmp[3]);
+		}
+
+		elsifConditions[i].push_back((char)Command::getfield);
+		tmp = intToBytes(if_s->bool_field_mr);
+		elsifConditions[i].push_back(tmp[2]);
+		elsifConditions[i].push_back(tmp[3]);
+		elsifConditions[i].push_back((char)Command::ifeq);
+		tmp = intToBytes(elsifBodys[i].size() + 3);
+		elsifConditions[i].push_back(tmp[2]);
+		elsifConditions[i].push_back(tmp[3]);
+		resultCode.insert(resultCode.begin(), elsifBodys[i].begin(), elsifBodys[i].end());
+		resultCode.insert(resultCode.begin(), elsifConditions[i].begin(), elsifConditions[i].end());
+	}
+
+	//if (if_s->else_branch != 0) {
+	//	elseBranch = generate(if_s->else_branch);
+	//	trueBranch.push_back((char)Command::goto_);
+	//	tmp = intToBytes(elseBranch.size() + 3);
+	//	trueBranch.push_back(tmp[2]);
+	//	trueBranch.push_back(tmp[3]);
+	//}
+
+	//trueCondition.push_back((char)Command::getfield);
+	//tmp = intToBytes(if_s->bool_field_mr);
+	//trueCondition.push_back(tmp[2]);
+	//trueCondition.push_back(tmp[3]);	
+	//trueCondition.push_back((char)Command::ifeq);
+	//tmp = intToBytes(trueBranch.size() + 3);
+	//trueCondition.push_back(tmp[2]);
+	//trueCondition.push_back(tmp[3]);
+
+	//resultCode.insert(resultCode.end(), trueCondition.begin(), trueCondition.end());
+	//resultCode.insert(resultCode.end(), trueBranch.begin(), trueBranch.end());
+	//resultCode.insert(resultCode.end(), elseBranch.begin(), elseBranch.end());
+
+	return resultCode;
 }
 
 std::vector<char> generateConstructor(Method* m) {
@@ -197,7 +340,7 @@ std::vector<char> generateConstructor(Method* m) {
 	return result_bytes;
 }
 
-void generate(Constant constant) {
+void generate_java(Constant constant) {
 	// UTF-8
 	if (constant.type == Constant::Type::Utf8) {
 		char const* c = constant.sVal.c_str();
@@ -265,9 +408,11 @@ void generate(Constant constant) {
 	}
 }
 
-std::vector<char> generate(expr_struct* expr) {
+std::vector<char> generate_java(expr_struct* expr) {
 	std::vector<char> resultCode = std::vector<char>();
 	std::vector<char> tmp = std::vector<char>();
+	std::vector<char> tmp1 = std::vector<char>();
+
 	expr_struct* c = 0;
 	int counter = 0;
 
@@ -280,9 +425,16 @@ std::vector<char> generate(expr_struct* expr) {
 		resultCode.push_back(tmp[3]);
 		resultCode.push_back((char)Command::dup);
 		tmp = intToBytes(expr->int_val);
-		resultCode.push_back((char)Command::sipush);
-		resultCode.push_back(tmp[2]);
-		resultCode.push_back(tmp[3]);
+		if (expr->int_val >= -32768 && expr->int_val <= 32767) {
+			resultCode.push_back((char)Command::sipush);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+		} else {
+			resultCode.push_back((char)Command::ldc_w);
+			tmp = intToBytes(expr->value_id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+		}
 		resultCode.push_back((char)Command::invokespecial);
 		tmp = intToBytes(expr->id);
 		resultCode.push_back(tmp[2]);
@@ -322,14 +474,81 @@ std::vector<char> generate(expr_struct* expr) {
 		break;
 	case assign:
 		// TODO: Improve! (Now works only when left expression is localvar)
-		tmp = generate(expr->right);
+		tmp = generate_java(expr->right);
 		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		resultCode.push_back((char)Command::dup);
 		resultCode.push_back((char)Command::astore);
 		resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
 		break;
 	case var_or_method:
 		resultCode.push_back((char)Command::aload);
 		resultCode.push_back(intToBytes(expr->local_var_num)[3]);
+		break;
+	case logical_and:
+		tmp = generate_java(expr->left);
+		tmp1 = generate_java(expr->right);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		resultCode.push_back((char)Command::dup);
+		resultCode.push_back((char)Command::getfield);
+		tmp = intToBytes(expr->boolean_fr);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::ifne);
+		tmp = intToBytes(14);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::new_);
+		tmp = intToBytes(expr->class_id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::dup);
+		resultCode.push_back((char)Command::iconst_0);
+		resultCode.push_back((char)Command::invokespecial);
+		tmp = intToBytes(expr->boolean_init_mr);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::goto_);
+		tmp = intToBytes(tmp1.size() + 6);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.insert(resultCode.end(), tmp1.begin(), tmp1.end());
+		resultCode.push_back((char)Command::invokevirtual);
+		tmp = intToBytes(expr->id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		break;
+	case logical_or:
+		tmp = generate_java(expr->left);
+		tmp1 = generate_java(expr->right);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		resultCode.push_back((char)Command::dup);
+		resultCode.push_back((char)Command::getfield);
+		tmp = intToBytes(expr->boolean_fr);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::ifeq);
+		tmp = intToBytes(14);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::new_);
+		tmp = intToBytes(expr->class_id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::dup);
+		resultCode.push_back((char)Command::iconst_1);
+		resultCode.push_back((char)Command::invokespecial);
+		tmp = intToBytes(expr->boolean_init_mr);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.push_back((char)Command::goto_);
+		tmp = intToBytes(tmp1.size() + 6);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		resultCode.insert(resultCode.end(), tmp1.begin(), tmp1.end());
+		resultCode.push_back((char)Command::invokevirtual);
+		tmp = intToBytes(expr->id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
 		break;
 	case plus:
 	case minus:
@@ -343,12 +562,10 @@ std::vector<char> generate(expr_struct* expr) {
 	case greater_eql:
 	case less_eql:
 	case pow_:
-	case logical_and:
-	case logical_or:
 	case member_access:
-		tmp = generate(expr->left);
+		tmp = generate_java(expr->left);
 		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
-		tmp = generate(expr->right);
+		tmp = generate_java(expr->right);
 		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
 		resultCode.push_back((char)Command::invokevirtual);
 		tmp = intToBytes(expr->id);
@@ -360,13 +577,29 @@ std::vector<char> generate(expr_struct* expr) {
 		if (expr->list != 0) {
 			c = expr->list->first;
 			while (c != 0) {
-				tmp = generate(c);
+				tmp = generate_java(c);
 				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
 				c = c->next;
 			}
 		}
 		resultCode.push_back((char)Command::invokestatic);
 		tmp = intToBytes(expr->id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		break;
+	case object_method_call:
+		if (expr->right->list != 0) {
+			c = expr->right->list->first;
+			while (c != 0) {
+				tmp = generate_java(c);
+				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+				c = c->next;
+			}
+		}
+		resultCode.push_back((char)Command::aload);
+		resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
+		resultCode.push_back((char)Command::invokevirtual);
+		tmp = intToBytes(expr->right->id);
 		resultCode.push_back(tmp[2]);
 		resultCode.push_back(tmp[3]);
 		break;
@@ -392,18 +625,20 @@ std::vector<char> generate(expr_struct* expr) {
 		resultCode.push_back((char)Command::dup);
 
 		// Add elements
-		c = expr->list->first;
-		while (c != 0) {
-			tmp = intToBytes(counter);
-			resultCode.push_back((char)Command::sipush);
-			resultCode.push_back(tmp[2]);
-			resultCode.push_back(tmp[3]);
-			tmp = generate(c);
-			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
-			resultCode.push_back((char)Command::aastore);
-			resultCode.push_back((char)Command::dup);
-			++counter;
-			c = c->next;
+		if (expr->list != 0) {
+			c = expr->list->first;
+			while (c != 0) {
+				tmp = intToBytes(counter);
+				resultCode.push_back((char)Command::sipush);
+				resultCode.push_back(tmp[2]);
+				resultCode.push_back(tmp[3]);
+				tmp = generate_java(c);
+				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+				resultCode.push_back((char)Command::aastore);
+				resultCode.push_back((char)Command::dup);
+				++counter;
+				c = c->next;
+			}
 		}
 		// because after last element we dup data.
 		resultCode.push_back((char)Command::pop);
@@ -424,6 +659,29 @@ std::vector<char> generate(expr_struct* expr) {
 		resultCode.push_back(tmp[3]);
 		//resultCode.push_back((char)Command::pop);
 		break;
+	case member_access_and_assign: 
+		tmp = generate_java(expr->left);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		tmp = generate_java(expr->index);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		tmp = generate_java(expr->right);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		resultCode.push_back((char)Command::invokevirtual);
+		tmp = intToBytes(expr->id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		break;
+	case logical_not:
+	// printf("%d", expr->left->int_val);
+	case unary_plus:
+	case unary_minus:
+		tmp = generate_java(expr->left);
+		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		resultCode.push_back((char)Command::invokevirtual);
+		tmp = intToBytes(expr->id);
+		resultCode.push_back(tmp[2]);
+		resultCode.push_back(tmp[3]);
+		break;
 	default:
 		break;
 	}
@@ -431,7 +689,7 @@ std::vector<char> generate(expr_struct* expr) {
 	return resultCode;
 }
 
-std::vector<char> generate(stmt_list_struct* list) {
+std::vector<char> generate_java(stmt_list_struct* list) {
 	std::vector<char> resultCode = std::vector<char>();
 	std::vector<char> tmp = std::vector<char>();
 
@@ -440,7 +698,29 @@ std::vector<char> generate(stmt_list_struct* list) {
 		switch (c->type)
 		{
 		case expr_stmt_t:
-			tmp = generate(c->expr_f);
+			tmp = generate_java(c->expr_f);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			break;
+		case return_stmt_t:
+			if (c->expr_f != 0) {
+				tmp = generate_java(c->expr_f);
+				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+				resultCode.push_back((char)Command::areturn);
+			} else {
+				resultCode.push_back((char)Command::return_);
+			}
+			
+			break;
+		case while_stmt_t:
+			tmp = generate_java(c->while_stmt_f);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			break;
+		case if_stmt_t:
+			tmp = generate_java(c->if_stmt_f);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			break;
+		case until_stmt_t:
+			tmp = generate_java(c->until_stmt_f);
 			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
 			break;
 		default:

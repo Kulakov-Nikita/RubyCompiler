@@ -10,12 +10,15 @@
 #include "Constant.h"
 #include "Commands.h"
 
-void generate(program_struct* program, const std::map<std::string, Clazz *> & clazzList);
-void generate(Constant constant);
-void generate(Method* method);
+void generate_java(program_struct* program, const std::map<std::string, Clazz *> & clazzList);
+void generate_java(Constant constant);
+void generate_java(Method* method);
 std::vector<char> generateConstructor(Method * m);
-std::vector<char> generate(expr_struct * expr);
-std::vector<char> generate(stmt_list_struct* list);
+std::vector<char> generate_java(expr_struct * expr);
+std::vector<char> generate_java(stmt_list_struct* list);
+std::vector<char> generate_java(while_stmt_struct* while_s);
+std::vector<char> generate_java(if_stmt_struct* if_s);
+std::vector<char> generate_java(until_stmt_struct* until_s);
 
 std::vector <char> intToBytes(int value);
 

@@ -1,4 +1,5 @@
 #include "semantic.h"
+#include <cstring>
 
 void fillTable(program_struct* program) {
 	Clazz * clazz = new Clazz();
@@ -7,7 +8,7 @@ void fillTable(program_struct* program) {
 	clazz->pushConstant(Constant::Utf8("Code"));
 	clazz->number = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(clazz->name))));
 
-	int parent_class_name = clazz->pushConstant(Constant::Utf8("Ljava/lang/Object;"));
+	int parent_class_name = clazz->pushConstant(Constant::Utf8("java/lang/Object"));
 	clazz->parend_number = clazz->pushConstant(Constant::Class(parent_class_name));
 
 	Method* mainMethod = new Method();
@@ -62,7 +63,7 @@ void fillTable(class_declaration_struct* class_decl) {
 	clazz->name = class_decl->name;
 	clazzesList[clazz->name] = clazz;
 	clazz->pushConstant(Constant::Utf8("Code"));
-	clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(clazz->name))));
+	clazz->number = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(clazz->name))));
 
 	// TODO: Parent;
 	if (class_decl->parent != 0) {
@@ -74,6 +75,10 @@ void fillTable(class_declaration_struct* class_decl) {
 			printf("SEMANTIC ERROR: parent class %s for class %s not found\n", class_decl->parent, class_decl->name);
 		}
 	}
+	else{
+		int parent_class_name = clazz->pushConstant(Constant::Utf8("java/lang/Object"));
+		clazz->parend_number = clazz->pushConstant(Constant::Class(parent_class_name));
+	}
 
 	if (class_decl->body != 0) {
 		def_method_stmt_struct* c = class_decl->body->first;
@@ -83,19 +88,24 @@ void fillTable(class_declaration_struct* class_decl) {
 		}
 	}
 
-	//TODO: Deafult constructor...
-	clazz->pushConstant(Constant::Utf8("<init>"));
+	//TODO: Deafult constructor from Parent...
+	Method* initMethod = new Method();
+	initMethod->name = "<init>";
+	initMethod->nameNumber = clazz->pushConstant(Constant::Utf8(initMethod->name));
+	initMethod->descriptorNumber = clazz->pushConstant(Constant::Utf8("()V"));
+	initMethod->local_variables.push_back("this");
+	initMethod->body = 0;
+	initMethod->number = clazz->pushOrFindMethodRef(clazz->name, initMethod->name, "()V");
+	initMethod->self_method_ref = clazz->pushOrFindMethodRef("java/lang/Object", initMethod->name, "()V");
+	clazz->methods[initMethod->name] = initMethod;
 }
 
 void fillTable(Clazz* clazz, def_method_stmt_struct* method) {
 	Method * m = new Method();
 	m->name = method->name;
-	m->body = method->body;
-	
-	if (clazz->name != "__PROGRAM__") { // not static...
-		m->local_variables.push_back("this");
-	}
-	
+	m->nameNumber = clazz->pushConstant(Constant::Utf8(m->name));
+	m->isStatic = true;
+
 	int params_counter = 0;
 	if (method->params != 0) {
 		method_param_struct* c = method->params->first;
@@ -103,18 +113,21 @@ void fillTable(Clazz* clazz, def_method_stmt_struct* method) {
 			params_counter++;
 			m->local_variables.push_back(c->name);
 			c->local_var_num = m->local_variables.size() - 1;
-			// TODO: дефолтные значения.
+			// TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 			c = c->next;
 		}
 	}
-	
-	m->number = clazz->pushOrFindMethodRef(m->name, method_descriptor(params_counter));
+	std::string m_d = method_descriptor(params_counter);
+	m->descriptorNumber = clazz->pushConstant(Constant::Utf8(m_d));
+	m->number = clazz->pushOrFindMethodRef(clazz->name, m->name, m_d);
 	method->id = m->number;
+	m->body = method->body;
+	m->nill_class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
+	m->nill_constructor_mr = clazz->pushOrFindMethodRef("__BASE__", "<init>", "()V");
+	clazz->methods[m->name] = m;
 	
 	fillTable(clazz, m, method->body);
-
-	// Добавить методв в таблицу методов класса...
-	clazz->methods[m->name] = m;
+	
 }
 
 void fillTable(Clazz* clazz, Method* method, stmt_list_struct* body) {
@@ -143,11 +156,13 @@ void fillTable(Clazz* clazz, Method* method, stmt_struct* stmt) {
 		existsId(clazz, method, stmt->while_stmt_f->condition);
 		fillTable(clazz, method, stmt->while_stmt_f->condition);
 		fillTable(clazz, method, stmt->while_stmt_f->body);
+		stmt->while_stmt_f->bool_field_mr = clazz->pushOrFindFieldRef("__BASE__", "__bVal", "Z");
 		break;
 	case until_stmt_t:
 		existsId(clazz, method, stmt->until_stmt_f->condition);
 		fillTable(clazz, method, stmt->until_stmt_f->condition);
 		fillTable(clazz, method, stmt->until_stmt_f->body);
+		stmt->until_stmt_f->bool_field_mr = clazz->pushOrFindFieldRef("__BASE__", "__bVal", "Z");
 		break;
 	case if_stmt_t:
 		fillTable(clazz, method, stmt->if_stmt_f->if_branch);
@@ -163,13 +178,14 @@ void fillTable(Clazz* clazz, Method* method, stmt_struct* stmt) {
 		if (stmt->if_stmt_f->else_branch != 0) {
 			fillTable(clazz, method, stmt->if_stmt_f->else_branch);
 		}
+		stmt->if_stmt_f->bool_field_mr = clazz->pushOrFindFieldRef("__BASE__", "__bVal", "Z");
 		break;
 	case block_stmt_t:
 		fillTable(clazz, method, stmt->block_stmt_f->list);
 		break;
 	case return_stmt_t:
 		existsId(clazz, method, stmt->expr_f);
-		fillTable(clazz, method, stmt->expr_f);
+		if(stmt->expr_f != 0) fillTable(clazz, method, stmt->expr_f);
 		break;
 	default:
 		break;
@@ -220,15 +236,15 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		existsId(clazz, method, expr->right);
 		break;
 	case logical_not:
-		expr->id = clazz->pushOrFindMethodRef("__not__", ("(L__BASE__;)L__BASE__;"));
+		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__not__", ("()L__BASE__;"));
 		existsId(clazz, method, expr->left);
 		break;
 	case unary_plus:
-		expr->id = clazz->pushOrFindMethodRef("__unary_plus__", "()L__BASE__;");
+		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__unary_plus__", "()L__BASE__;");
 		existsId(clazz, method, expr->left);
 		break;
 	case unary_minus:
-		expr->id = clazz->pushOrFindMethodRef("__unary_minus__", "()L__BASE__;");
+		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__unary_minus__", "()L__BASE__;");
 		existsId(clazz, method, expr->left);
 		break;
 	case mod_assign:
@@ -306,11 +322,17 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		break;
 	case logical_and:
 		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__logical_and__", "(L__BASE__;)L__BASE__;");
+		expr->class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
+		expr->boolean_fr = clazz->pushOrFindFieldRef("__BASE__", "__bVal", "Z");
+		expr->boolean_init_mr = clazz->pushOrFindMethodRef("__BASE__", "<init>", "(Z)V");
 		existsId(clazz, method, expr->left);
 		existsId(clazz, method, expr->right);
 		break;
 	case logical_or:
 		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__logical_or__", "(L__BASE__;)L__BASE__;");
+		expr->class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
+		expr->boolean_fr = clazz->pushOrFindFieldRef("__BASE__", "__bVal", "Z");
+		expr->boolean_init_mr = clazz->pushOrFindMethodRef("__BASE__", "<init>", "(Z)V");
 		existsId(clazz, method, expr->left);
 		existsId(clazz, method, expr->right);
 		break;
@@ -351,7 +373,16 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		else if (strcmp(expr->str_val, "println") == 0) {
 			expr->id = clazz->pushOrFindMethodRef("__BASE__", "println", "(L__BASE__;)V");
 		}
-		else {
+		else if (strcmp(expr->str_val, "gets") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "__gets__", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "to_s") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "__to_s__", "(L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "upcase") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "upcase", "()L__BASE__;");
+		}
+		else{
 			existsMethod(expr->str_val);
 			expr->id = clazz->pushOrFindMethodRef(expr->str_val, method_descriptor(count_exprs(expr->list)));
 		}
@@ -368,16 +399,14 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		expr->class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
 		break;
 	case member_access_and_assign:
-		expr->id = clazz->pushOrFindMethodRef("__member_access_assign__", "(L__BASE__;L__BASE__;)L__BASE__;");
+		expr->id = clazz->pushOrFindMethodRef("__BASE__", "__member_access_assign__", "(L__BASE__;L__BASE__;)L__BASE__;");
 		existsId(clazz, method, expr->left);
 		existsId(clazz, method, expr->right);
 		existsId(clazz, method, expr->index);
 		break;
 	case object_method_call:
 		existsId(clazz, method, expr->left);
-		if (expr->list != 0) {
-			existsIds(clazz, method, expr->list);
-		}
+		existsId(clazz, method, expr->right);
 		break;
 	default:
 		break;
@@ -400,6 +429,7 @@ bool existsId(Clazz* clazz, Method* method, expr_struct* expr) {
 		bool inClazz = std::find(method->local_variables.begin(), method->local_variables.end(), expr->str_val) != method->local_variables.end();
 		std::vector<std::string> mainMethodLocalVars = clazzesList["__PROGRAM__"]->methods["main"]->local_variables;
 		bool inMainClazz = std::find(mainMethodLocalVars.begin(), mainMethodLocalVars.end(), expr->str_val) != mainMethodLocalVars.end();
+		bool isClassName = clazzesList.find(expr->str_val) != clazzesList.end();
 
 		if (!(inClazz || inMainClazz)) {
 			printf("SEMANTIC ERROR: local variable %s is not defined\n", expr->str_val);
@@ -439,7 +469,7 @@ std::string method_descriptor(int size) {
 	for (int i = 0; i < size; ++i) {
 		str += "L__BASE__;";
 	}
-	str += ")L__BASE__;";
+	str += ")L__BASE__;"; //!!!!!!!!!!!!!!!!!!!! TODO: FIX IT!!!!!!!!!!!!!!!!!
 	return str;
 }
 
