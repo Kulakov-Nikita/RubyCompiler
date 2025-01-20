@@ -12,6 +12,7 @@ struct Constant
 		String = 8,
 		Fieldref = 9,
 		Methodref = 10,
+		InterfaceMethodref = 11,
 		NameAndType = 12
 	};
 
@@ -79,6 +80,15 @@ struct Constant
 		return c;
 	}
 
+	static Constant InterfaceMethodRef(int class_id, int name_and_type_id) {
+		Constant c;
+		c.type = Type::InterfaceMethodref;
+		c.class_id = class_id;
+		c.name_and_type_id = name_and_type_id;
+		printf("Interface\n");
+		return c;
+	}
+
 	static Constant NameAndType(int name_utf8_id, int descriptor_utf8_id) {
 		Constant c;
 		c.type = Type::NameAndType;
@@ -103,6 +113,7 @@ struct Constant
 		case Constant::Type::NameAndType:
 			return (l.name_id == r.name_id) && (l.type_id == r.type_id);
 		case Constant::Type::Methodref:
+		case Constant::Type::InterfaceMethodref:
 		case Constant::Type::Fieldref:
 			return (l.name_and_type_id == r.name_and_type_id) && (l.class_id == r.class_id);
 		}
@@ -128,6 +139,7 @@ struct Constant
 			case Constant::Type::NameAndType:
 				return l.name_id < r.name_id || ((l.name_id == r.name_id) && (l.type_id < r.type_id));
 			case Constant::Type::Fieldref:
+			case Constant::Type::InterfaceMethodref:
 			case Constant::Type::Methodref:
 				return l.class_id < r.class_id || ((l.class_id == r.class_id) && (l.name_and_type_id < r.name_and_type_id));
 			}

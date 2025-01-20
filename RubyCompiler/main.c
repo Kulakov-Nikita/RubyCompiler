@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     fillTable(root);
     PrintProgram(root, tree);
     //puts("Hello");
-    run_dot("../dot/dot.exe", "../RubyCompiler/tree.dot");
+    run_dot("../dot/dot.exe", "../Compiler/tree.dot");
     generate_java(root, clazzesList);
     return 0;
 }

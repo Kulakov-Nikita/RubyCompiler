@@ -172,6 +172,66 @@ void generate_java(Method* method) {
 	}
 }
 
+std::vector<char> generate_java(for_stmt_struct* for_s) {
+	std::vector<char> resultCode = std::vector<char>();
+	std::vector<char> tmp = std::vector<char>();
+	std::vector<char> code = generate_java(for_s->body);
+
+	tmp = generate_java(for_s->condition);
+	resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+
+	resultCode.push_back((char)Command::invokevirtual);
+	tmp = intToBytes(for_s->for_methodref);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	resultCode.push_back((char)Command::astore);
+	resultCode.push_back(for_s->iterator_local_num);
+
+	resultCode.push_back((char)Command::aload);
+	resultCode.push_back(for_s->iterator_local_num);
+
+	resultCode.push_back((char)Command::invokeinterface);
+	tmp = intToBytes(for_s->for_has_next_methodref);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.push_back(0x01);
+	resultCode.push_back(0x00);
+
+	resultCode.push_back((char)Command::ifeq);
+	tmp = intToBytes(code.size() + 18);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	resultCode.push_back((char)Command::aload);
+	resultCode.push_back(for_s->iterator_local_num);
+
+	resultCode.push_back((char)Command::invokeinterface);
+	tmp = intToBytes(for_s->for_next_methodref);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+	resultCode.push_back(0x01);
+	resultCode.push_back(0x00);
+
+	resultCode.push_back((char)Command::checkcast);
+	tmp = intToBytes(for_s->class_pool_number);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	resultCode.push_back((char)Command::astore);
+	resultCode.push_back(for_s->iterable_var_local_num);
+
+	resultCode.insert(resultCode.end(), code.begin(), code.end());
+
+	tmp = intToBytes(-1 * code.size() - 22);
+	resultCode.push_back((char)Command::goto_);
+	resultCode.push_back(tmp[2]);
+	resultCode.push_back(tmp[3]);
+
+	return resultCode;
+}
+
+
 std::vector<char> generate_java(until_stmt_struct* until_s) {
 	std::vector<char> resultCode = std::vector<char>();
 	std::vector<char> tmp = std::vector<char>();
@@ -392,6 +452,15 @@ void generate_java(Constant constant) {
 	// Methodref
 	if (constant.type == Constant::Type::Methodref) {
 		std::cout << (char)Constant::Type::Methodref;
+		std::vector<char> len = intToBytes(constant.class_id);
+		std::cout << len[2] << len[3];
+		len = intToBytes(constant.name_and_type_id);
+		std::cout << len[2] << len[3];
+	}
+
+	// InterfaceMethodref
+	if (constant.type == Constant::Type::InterfaceMethodref) {
+		std::cout << (char)Constant::Type::InterfaceMethodref;
 		std::vector<char> len = intToBytes(constant.class_id);
 		std::cout << len[2] << len[3];
 		len = intToBytes(constant.name_and_type_id);
@@ -721,6 +790,10 @@ std::vector<char> generate_java(stmt_list_struct* list) {
 			break;
 		case until_stmt_t:
 			tmp = generate_java(c->until_stmt_f);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			break;
+		case for_stmt_t:
+			tmp = generate_java(c->for_stmt_f);
 			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
 			break;
 		default:

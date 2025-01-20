@@ -78,6 +78,7 @@ struct expr_struct {
 	int list_constructor_mr;
 	int boolean_init_mr;
 	int boolean_fr;
+	char* object_class_name; /* For method class name */
 };
 
 enum stmt_type {
@@ -144,6 +145,11 @@ struct for_stmt_struct {
 
 	// semantic
 	int iterable_var_local_num;
+	int for_methodref;
+	int for_has_next_methodref;
+	int for_next_methodref;
+	int iterator_local_num;
+	int class_pool_number;
 };
 
 struct while_stmt_struct {

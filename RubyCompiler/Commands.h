@@ -56,6 +56,7 @@ enum class Command {
 	invokevirtual = 0xB6,
 	invokespecial = 0xB7,
 	invokestatic = 0xB8,
+	invokeinterface = 0xB9,
 	ireturn = 0xAC,
 	areturn = 0xB0,
 	return_ = 0xB1,

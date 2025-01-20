@@ -148,9 +148,17 @@ void fillTable(Clazz* clazz, Method* method, stmt_struct* stmt) {
 	case for_stmt_t:
 		method->local_variables.push_back(stmt->for_stmt_f->iterable_var);
 		stmt->for_stmt_f->iterable_var_local_num = method->local_variables.size() - 1;
+		method->local_variables.push_back("for_iterator");
+		stmt->for_stmt_f->iterator_local_num = method->local_variables.size() - 1;
 		existsId(clazz, method, stmt->for_stmt_f->condition);
 		fillTable(clazz, method, stmt->for_stmt_f->condition);
 		fillTable(clazz, method, stmt->for_stmt_f->body);
+		stmt->for_stmt_f->class_pool_number = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
+		clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("java/util/Iterator"))));
+		clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("java/lang/Object"))));
+		stmt->for_stmt_f->for_methodref = clazz->pushOrFindMethodRef("__BASE__", "__get_iterator__", "()Ljava/util/Iterator;");
+		stmt->for_stmt_f->for_has_next_methodref = clazz->pushOrFindInterfaceMethodRef("java/util/Iterator", "hasNext", "()Z");
+		stmt->for_stmt_f->for_next_methodref = clazz->pushOrFindInterfaceMethodRef("java/util/Iterator", "next", "()Ljava/lang/Object;");
 		break;
 	case while_stmt_t:
 		existsId(clazz, method, stmt->while_stmt_f->condition);
@@ -384,7 +392,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		}
 		else{
 			existsMethod(expr->str_val);
-			expr->id = clazz->pushOrFindMethodRef(expr->str_val, method_descriptor(count_exprs(expr->list)));
+			expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list)));
 		}
 
 		break;
@@ -407,6 +415,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case object_method_call:
 		existsId(clazz, method, expr->left);
 		existsId(clazz, method, expr->right);
+		expr->right->object_class_name = expr->left->str_val;
 		break;
 	default:
 		break;
@@ -431,7 +440,7 @@ bool existsId(Clazz* clazz, Method* method, expr_struct* expr) {
 		bool inMainClazz = std::find(mainMethodLocalVars.begin(), mainMethodLocalVars.end(), expr->str_val) != mainMethodLocalVars.end();
 		bool isClassName = clazzesList.find(expr->str_val) != clazzesList.end();
 
-		if (!(inClazz || inMainClazz)) {
+		if (!(inClazz || inMainClazz || isClassName)) {
 			printf("SEMANTIC ERROR: local variable %s is not defined\n", expr->str_val);
 			return false;
 		}
