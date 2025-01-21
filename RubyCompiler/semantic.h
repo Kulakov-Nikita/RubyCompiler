@@ -16,6 +16,8 @@ struct Field {
 	bool isStatic;
 	std::string name;
 	int number;
+	int nameNumber;
+	int descriptorNumber;
 };
 
 struct Method {
@@ -54,14 +56,17 @@ public:
 		return iter->second;
 	}
 
-	void addField(const std::string& fieldName, const std::string& type) {
+	int addField(const std::string& fieldName, const std::string& type) {
 		int id = pushOrFindFieldRef(fieldName, type);
 		if (fields.find(fieldName) == fields.end()) {
 			Field* f = new Field();
 			f->name = fieldName;
 			f->number = id;
+			f->nameNumber = pushConstant(Constant::Utf8(fieldName));
+			f->descriptorNumber = pushConstant(Constant::Utf8(type));
 			fields[fieldName] = f;
 		}
+		return id;
 	}
 
 	int pushOrFindFieldRef(const std::string& fieldName, const std::string& type) {

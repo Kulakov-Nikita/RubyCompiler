@@ -37,8 +37,15 @@ void generate_java(program_struct* program, const std::map<std::string, Clazz*>&
 		std::cout << bytes[2] << bytes[3];
 		// Interfaces table
 		std::cout << (char)0x00 << (char)0x00;
+
 		// Field count
-		std::cout << (char)0x00 << (char)0x00;
+		bytes = intToBytes(clazz.second->fields.size());
+		std::cout << bytes[2] << bytes[3];
+
+		for (auto i : clazz.second->fields) {
+			generate_java(i.second);
+		}
+
 		// methods count
 		bytes = intToBytes(clazz.second->methods.size());
 		std::cout << bytes[2] << bytes[3];
@@ -79,6 +86,28 @@ void generate_java(program_struct* program, const std::map<std::string, Clazz*>&
 		// atributes
 		std::cout << (char)0x00 << (char)0x00;
 	}
+}
+
+void generate_java(Field* field)
+{
+	std::vector<char> bytes;
+	// public 
+	if (field->isStatic) {
+		std::cout << (char)0x00 << (char)0x09;
+	}
+	else {
+		std::cout << (char)0x00 << (char)0x01;
+	}
+	// name
+	bytes = intToBytes(field->nameNumber);
+	std::cout << bytes[2] << bytes[3];
+
+	// descriptor
+	bytes = intToBytes(field->descriptorNumber);
+	std::cout << bytes[2] << bytes[3];
+
+	// atributes count
+	std::cout << (char)0x00 << (char)0x00;
 }
 
 void generate_java(Method* method) {

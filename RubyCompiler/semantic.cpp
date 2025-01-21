@@ -235,7 +235,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		}
 		break;
 	case instance_var:
-		clazz->addField(expr->str_val, "L__BASE__;");
+		expr->id = clazz->addField(expr->str_val, "L__BASE__;");
 		break;
 	case assign:
 		if (expr->left->type == var_or_method && std::find(method->local_variables.begin(), method->local_variables.end(), expr->left->str_val) == method->local_variables.end()) {

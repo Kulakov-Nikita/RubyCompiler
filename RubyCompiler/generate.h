@@ -13,6 +13,7 @@
 void generate_java(program_struct* program, const std::map<std::string, Clazz *> & clazzList);
 void generate_java(Constant constant);
 void generate_java(Method* method);
+void generate_java(Field* field);
 std::vector<char> generateConstructor(Method * m);
 std::vector<char> generate_java(expr_struct * expr);
 std::vector<char> generate_java(stmt_list_struct* list);
