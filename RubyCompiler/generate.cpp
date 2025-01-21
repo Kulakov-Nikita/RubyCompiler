@@ -572,15 +572,36 @@ std::vector<char> generate_java(expr_struct* expr) {
 		break;
 	case assign:
 		// TODO: Improve! (Now works only when left expression is localvar)
-		tmp = generate_java(expr->right);
-		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
-		resultCode.push_back((char)Command::dup);
-		resultCode.push_back((char)Command::astore);
-		resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
+		if(expr->left->type == instance_var)
+		{
+			tmp = generate_java(expr->right);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			//resultCode.push_back((char)Command::dup);
+			resultCode.push_back((char)Command::putfield);
+			tmp = intToBytes(expr->left->id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+		}
+		else if (expr->left->type == var_or_method)
+		{
+			tmp = generate_java(expr->right);
+			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+			resultCode.push_back((char)Command::dup);
+			resultCode.push_back((char)Command::astore);
+			resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
+		}
 		break;
 	case var_or_method:
 		resultCode.push_back((char)Command::aload);
 		resultCode.push_back(intToBytes(expr->local_var_num)[3]);
+		break;
+	case instance_var:
+		resultCode.push_back((char)Command::aload);
+		resultCode.push_back((char)0);
+		resultCode.push_back((char)Command::getfield);
+		tmp = intToBytes(expr->id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
 		break;
 	case logical_and:
 		tmp = generate_java(expr->left);
