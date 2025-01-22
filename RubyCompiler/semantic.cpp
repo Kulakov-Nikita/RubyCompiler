@@ -466,7 +466,8 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 			existsMethod(expr->str_val);
 			if(expr->method_call_type == 0)
 			{
-				expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list)));
+				if(expr->object_class_name)expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list)));
+				else expr->id = clazz->pushOrFindMethodRef(expr->str_val, method_descriptor(count_exprs(expr->list)));
 			}
 			else expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list), expr->method_call_type));
 		}
