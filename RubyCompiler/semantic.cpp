@@ -414,7 +414,7 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		if (strcmp(expr->str_val,"print") == 0) {
 			expr->id = clazz->pushOrFindMethodRef("__BASE__", "print", "(L__BASE__;)V");
 		}
-		else if (strcmp(expr->str_val, "println") == 0) {
+		else if (strcmp(expr->str_val, "puts") == 0) {
 			expr->id = clazz->pushOrFindMethodRef("__BASE__", "println", "(L__BASE__;)V");
 		}
 		else if (strcmp(expr->str_val, "gets") == 0) {
@@ -494,10 +494,10 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		existsId(clazz, method, expr->right);
 		if(std::string(expr->right->str_val) == std::string("new"))
 		{
-			expr->right->str_val="<init>";
+			expr->right->str_val=strdup("<init>");
 			expr->left->id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(expr->left->str_val))));
-			expr->right->object_class_name = expr->left->str_val;
-			expr->right->method_call_type = "V";
+			expr->right->object_class_name = strdup(expr->left->str_val);
+			expr->right->method_call_type = strdup("V");
 		}
 		else
 		{

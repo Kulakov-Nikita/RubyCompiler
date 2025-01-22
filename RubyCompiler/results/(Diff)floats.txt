@@ -1,0 +1,11 @@
+Сравнение файлов .\RESULTS\floats.txt и .\RESULTS\(RUBY)FLOATS.TXT
+***** .\RESULTS\floats.txt
+4.8 + 2.0 = 6.8
+4.8 - 2.0 = 2.8000002
+4.8 * 2.0 = 9.6
+***** .\RESULTS\(RUBY)FLOATS.TXT
+4.8 + 2.0 = 6.8
+4.8 - 2.0 = 2.8
+4.8 * 2.0 = 9.6
+*****
+

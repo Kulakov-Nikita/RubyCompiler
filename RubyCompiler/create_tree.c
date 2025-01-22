@@ -1,4 +1,5 @@
 #include "create_tree.h"
+#include <cstdio>
 
 struct expr_struct* create_const_integer_expr(enum expr_type type, int val) {
     struct expr_struct* result = (struct expr_struct*)malloc(sizeof(struct expr_struct));

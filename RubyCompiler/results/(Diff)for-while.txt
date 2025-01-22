@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\for-while.txt и .\RESULTS\(RUBY)FOR-WHILE.TXT
+FC: различия не найдены
+

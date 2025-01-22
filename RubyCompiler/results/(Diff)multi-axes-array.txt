@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\multi-axes-array.txt и .\RESULTS\(RUBY)MULTI-AXES-ARRAY.TXT
+FC: различия не найдены
+

@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\functions.txt и .\RESULTS\(RUBY)FUNCTIONS.TXT
+FC: различия не найдены
+

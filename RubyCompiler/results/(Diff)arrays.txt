@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\arrays.txt и .\RESULTS\(RUBY)ARRAYS.TXT
+FC: различия не найдены
+

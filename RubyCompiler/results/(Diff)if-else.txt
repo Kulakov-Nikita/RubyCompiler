@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\if-else.txt и .\RESULTS\(RUBY)IF-ELSE.TXT
+FC: различия не найдены
+

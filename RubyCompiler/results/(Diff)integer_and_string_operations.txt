@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\integer_and_string_operations.txt и .\RESULTS\(RUBY)INTEGER_AND_STRING_OPERATIONS.TXT
+FC: различия не найдены
+

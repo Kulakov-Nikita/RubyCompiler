@@ -1,0 +1,7 @@
+Сравнение файлов .\RESULTS\classes.txt и .\RESULTS\(RUBY)CLASSES.TXT
+***** .\RESULTS\classes.txt
+Lь : =шъшЄр
+TючЁрёЄ: 22
+***** .\RESULTS\(RUBY)CLASSES.TXT
+*****
+

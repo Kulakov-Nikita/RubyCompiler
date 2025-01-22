@@ -1,0 +1,3 @@
+Сравнение файлов .\RESULTS\bin_oct_hex_dec.txt и .\RESULTS\(RUBY)BIN_OCT_HEX_DEC.TXT
+FC: различия не найдены
+
