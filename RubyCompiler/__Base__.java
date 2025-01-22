@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -242,7 +244,8 @@ public class __BASE__ {
 
     public __BASE__ __not_eql__(__BASE__ o) {
         try {
-            return new __BASE__(__eql__(o).__bVal);
+            if(this.__eql__(o).__bVal)return new __BASE__(false);
+            else return new __BASE__(true);
         } catch(UnsupportedOperationException e) {
             throw new UnsupportedOperationException("not_eql isn't support operation for types: " + this.__type + " and: " + o.__type);
         }
@@ -346,8 +349,87 @@ public class __BASE__ {
             if(index.__iVal >= this.__aVal.size()) return new __BASE__();
             return this.__aVal.get(index.__iVal);
         }
+        if(this.__type == STRING) {
+            if(index.__iVal<0)return new __BASE__(Character.toString(this.__sVal.charAt(this.__sVal.length() + index.__iVal)));
+            if(index.__iVal >= this.__sVal.length()) return new __BASE__();
+            return new __BASE__(Character.toString(this.__sVal.charAt(index.__iVal)));
+        }
 
         throw new UnsupportedOperationException("member_access isn't support operation for type: " + this.__type);
+    }
+
+    public __BASE__ length(){
+        if(this.__type == ARRAY) {
+            return new __BASE__(this.__aVal.size());
+        }
+        if(this.__type == STRING) {
+            return new __BASE__(this.__sVal.length());
+        }
+        throw new UnsupportedOperationException("length isn't support operation for type: " + this.__type);
+    }
+
+    public __BASE__ size()
+    {
+        return this.length();
+    }
+
+    public __BASE__ contains(__BASE__ str)
+    {
+        if(this.__type != STRING) throw new UnsupportedOperationException("contains isn't support operation for type: " + this.__type);
+        return new __BASE__(this.__sVal.contains(str.__sVal));
+    }
+
+    public __BASE__ gsub(__BASE__ a, __BASE__ b)
+    {
+        if(a.__type != STRING)throw new UnsupportedOperationException("regex must be a STRING not a: " + this.__type);
+        if(b.__type != STRING)throw new UnsupportedOperationException("replacement must be a STRING not a: " + this.__type);
+        if(this.__type != STRING) throw new UnsupportedOperationException("gsub isn't support operation for type: " + this.__type);
+        return new __BASE__(this.__sVal.replaceAll(a.__sVal, b.__sVal));
+    }
+    public __BASE__ sub(__BASE__ a, __BASE__ b)
+    {
+        if(a.__type != STRING)throw new UnsupportedOperationException("regex must be a STRING not a: " + this.__type);
+        if(b.__type != STRING)throw new UnsupportedOperationException("replacement must be a STRING not a: " + this.__type);
+        if(this.__type != STRING) throw new UnsupportedOperationException("sub isn't support operation for type: " + this.__type);
+        return new __BASE__(this.__sVal.replaceFirst(a.__sVal, b.__sVal));
+    }
+    public __BASE__ split(__BASE__ a)
+    {
+        if(this.__type != STRING) throw new UnsupportedOperationException("split isn't support operation for type: " + this.__type);
+        String[] tmp = this.__sVal.split(a.__sVal);
+        ArrayList<__BASE__> arrayList = new ArrayList<>();
+        for(String s:tmp)
+        {
+            arrayList.add(new __BASE__(s));
+        }
+        return new __BASE__(arrayList);
+    }
+    public __BASE__ join(__BASE__ a)
+    {
+        if(this.__type != ARRAY) throw new UnsupportedOperationException("join isn't support operation for type: " + this.__type);
+        if(a.__type != STRING)throw new UnsupportedOperationException("delimeter must be a STRING not a: " + this.__type);
+        ArrayList<String> joined = new ArrayList<>();
+        for(__BASE__ str:this.__aVal)
+        {
+            if(str.__type!=STRING)throw new UnsupportedOperationException("join isn't support for array with object type: " + this.__type);
+            joined.add(str.__sVal);
+        }
+        return new __BASE__(String.join(a.__sVal, joined));
+    }
+    public __BASE__ strip()
+    {
+        if(this.__type != STRING) throw new UnsupportedOperationException("strip isn't support operation for type: " + this.__type);
+        return new __BASE__(this.__sVal.trim());
+    }
+    public __BASE__ reverse()
+    {
+        if(this.__type != STRING) throw new UnsupportedOperationException("reverse isn't support operation for type: " + this.__type);
+        return new __BASE__(new StringBuilder(this.__sVal).reverse().toString());
+    }
+    public __BASE__ isEmpty()
+    {
+        if(this.__type != STRING) throw new UnsupportedOperationException("isEmpty isn't support operation for type: " + this.__type);
+        return new __BASE__(this.__sVal.isEmpty());
     }
 
     public __BASE__ __member_access_assign__(__BASE__ index, __BASE__ value) {
@@ -392,12 +474,31 @@ public class __BASE__ {
         return toString();
     }
 
+    public static void flatten(__BASE__ input, __BASE__ output) {
+        for (__BASE__ element : input.__aVal) {
+            if (element.__type == ARRAY) {
+                flatten(element, output);
+            } else {
+                output.__aVal.add(element);
+            }
+        }
+    }
+
     public static void print(__BASE__ value) {
         System.out.print(value.toString());
     }
 
     public static void println(__BASE__ value) {
-        System.out.println(value.toString());
+        if(value.__type == ARRAY)
+        {
+            __BASE__ output = new __BASE__(new ArrayList<>());
+            flatten(value, output);
+            for(__BASE__ str:output.__aVal)
+            {
+                System.out.println(str.toString());
+            }
+        }
+        else System.out.println(value.toString());
     }
 
     public static __BASE__  __gets__() {
@@ -462,13 +563,6 @@ public class __BASE__ {
         }
         return new __BASE__(this.__sVal.toLowerCase());
     }
-    public __BASE__ downcase()
-    {
-        if(this.__type != STRING){
-            throw new UnsupportedOperationException("downcase() isn't support operation for type: " + this.__type);
-        }
-        return new __BASE__(this.__sVal.toLowerCase());
-    }
 
 
     public static __BASE__ __to_s__(__BASE__ value) {
@@ -509,6 +603,14 @@ public class __BASE__ {
         }
 
         throw new UnsupportedOperationException("unary_minus isn't support operation for type: " + this.__type);
+    }
+
+    public Iterator __get_iterator__()
+    {
+        if (this.__type != ARRAY) {
+            throw new UnsupportedOperationException("__get_iterator__ isn't support operation for type: " + this.__type);
+        }
+        return __aVal.iterator();
     }
 
     public __BASE__ __unary_plus__() {

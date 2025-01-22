@@ -142,7 +142,11 @@ void fillTable(Clazz* clazz, def_method_stmt_struct* method) {
 	{
 		std::string parent_name = "";
 		if(clazz->parent)parent_name=clazz->parent->name;
-		else parent_name="java/lang/Object";
+		else 
+		{
+			parent_name="java/lang/Object";
+			m_d = method_descriptor(0, "V"); 
+		}
 		m->self_method_ref=clazz->pushOrFindMethodRef(parent_name, m->name, m_d);
 	}
 	method->id = m->number;
@@ -421,6 +425,42 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		}
 		else if (strcmp(expr->str_val, "upcase") == 0) {
 			expr->id = clazz->pushOrFindMethodRef("__BASE__", "upcase", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "downcase") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "downcase", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "length") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "length", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "size") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "size", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "sub") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "sub", "(L__BASE__;L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "gsub") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "gsub", "(L__BASE__;L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "include?") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "contains", "(L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "split") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "split", "(L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "join") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "join", "(L__BASE__;)L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "empty?") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "isEmpty", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "reverse") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "reverse", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "strip") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "strip", "()L__BASE__;");
+		}
+		else if (strcmp(expr->str_val, "to_i") == 0) {
+			expr->id = clazz->pushOrFindMethodRef("__BASE__", "__to_i__", "()L__BASE__;");
 		}
 		else{
 			existsMethod(expr->str_val);

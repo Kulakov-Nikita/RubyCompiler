@@ -718,14 +718,14 @@ std::vector<char> generate_java(expr_struct* expr) {
 		resultCode.push_back(tmp[3]);
 		break;
 	case object_method_call:
-		if (expr->right->list != 0) {
-			c = expr->right->list->first;
-			while (c != 0) {
-				tmp = generate_java(c);
-				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
-				c = c->next;
-			}
-		}
+		// if (expr->right->list != 0) {
+		// 	c = expr->right->list->first;
+		// 	while (c != 0) {
+		// 		tmp = generate_java(c);
+		// 		resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+		// 		c = c->next;
+		// 	}
+		// }
 		if(std::string(expr->right->str_val) == std::string("<init>"))
 		{
 			resultCode.push_back((char)Command::new_);
@@ -733,6 +733,14 @@ std::vector<char> generate_java(expr_struct* expr) {
 			resultCode.push_back(tmp[2]);
 			resultCode.push_back(tmp[3]);
 			resultCode.push_back((char)Command::dup);
+			if (expr->right->list != 0) {
+			c = expr->right->list->first;
+			while (c != 0) {
+				tmp = generate_java(c);
+				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+				c = c->next;
+			}
+		}
 			resultCode.push_back((char)Command::invokespecial);
 			tmp = intToBytes(expr->right->id);
 			resultCode.push_back(tmp[2]);
@@ -741,6 +749,14 @@ std::vector<char> generate_java(expr_struct* expr) {
 		else{
 			resultCode.push_back((char)Command::aload);
 			resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
+			if (expr->right->list != 0) {
+			c = expr->right->list->first;
+			while (c != 0) {
+				tmp = generate_java(c);
+				resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
+				c = c->next;
+			}
+		}
 			resultCode.push_back((char)Command::invokevirtual);
 			tmp = intToBytes(expr->right->id);
 			resultCode.push_back(tmp[2]);

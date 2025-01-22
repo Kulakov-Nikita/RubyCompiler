@@ -79,6 +79,7 @@ struct expr_struct {
 	int boolean_init_mr;
 	int boolean_fr;
 	char* object_class_name; /* For method class name */
+	char* method_call_type;
 };
 
 enum stmt_type {
