@@ -80,31 +80,46 @@ void fillTable(class_declaration_struct* class_decl) {
 		clazz->parend_number = clazz->pushConstant(Constant::Class(parent_class_name));
 	}
 
+	bool hasInitMethod = false;
+
 	if (class_decl->body != 0) {
 		def_method_stmt_struct* c = class_decl->body->first;
 		while (c != 0) {
+			if(std::string(c->name) == std::string("initialize"))hasInitMethod=true;
 			fillTable(clazz, c);
 			c = c->next;
 		}
 	}
 
 	//TODO: Deafult constructor from Parent...
-	Method* initMethod = new Method();
-	initMethod->name = "<init>";
-	initMethod->nameNumber = clazz->pushConstant(Constant::Utf8(initMethod->name));
-	initMethod->descriptorNumber = clazz->pushConstant(Constant::Utf8("()V"));
-	initMethod->local_variables.push_back("this");
-	initMethod->body = 0;
-	initMethod->number = clazz->pushOrFindMethodRef(clazz->name, initMethod->name, "()V");
-	initMethod->self_method_ref = clazz->pushOrFindMethodRef("java/lang/Object", initMethod->name, "()V");
-	clazz->methods[initMethod->name] = initMethod;
+	if(!hasInitMethod){
+		Method* initMethod = new Method();
+		initMethod->name = "<init>";
+		initMethod->nameNumber = clazz->pushConstant(Constant::Utf8(initMethod->name));
+		initMethod->descriptorNumber = clazz->pushConstant(Constant::Utf8("()V"));
+		initMethod->local_variables.push_back("this");
+		initMethod->body = 0;
+		initMethod->number = clazz->pushOrFindMethodRef(clazz->name, initMethod->name, "()V");
+		initMethod->self_method_ref = clazz->pushOrFindMethodRef("java/lang/Object", initMethod->name, "()V");
+		clazz->methods[initMethod->name] = initMethod;
+	}
 }
 
 void fillTable(Clazz* clazz, def_method_stmt_struct* method) {
 	Method * m = new Method();
 	m->name = method->name;
+	if(m->name=="initialize")
+	{
+		m->name="<init>";
+	}
 	m->nameNumber = clazz->pushConstant(Constant::Utf8(m->name));
-	m->isStatic = true;
+	if(clazz->name=="__PROGRAM__")m->isStatic = true;
+	else
+	{
+		m->isStatic = false;
+		m->local_variables.push_back("this");
+		m->local_variables_types["this"]=clazz->name;
+	}
 
 	int params_counter = 0;
 	if (method->params != 0) {
@@ -112,14 +127,24 @@ void fillTable(Clazz* clazz, def_method_stmt_struct* method) {
 		while (c != 0) {
 			params_counter++;
 			m->local_variables.push_back(c->name);
+			m->local_variables_types[c->name]="__BASE__";
 			c->local_var_num = m->local_variables.size() - 1;
 			// TODO: ��������� ��������.
 			c = c->next;
 		}
 	}
-	std::string m_d = method_descriptor(params_counter);
+	std::string m_d = "";
+	if(m->name=="<init>") m_d = method_descriptor(params_counter, "V"); 
+	else m_d = method_descriptor(params_counter);
 	m->descriptorNumber = clazz->pushConstant(Constant::Utf8(m_d));
 	m->number = clazz->pushOrFindMethodRef(clazz->name, m->name, m_d);
+	if(m->name=="<init>")
+	{
+		std::string parent_name = "";
+		if(clazz->parent)parent_name=clazz->parent->name;
+		else parent_name="java/lang/Object";
+		m->self_method_ref=clazz->pushOrFindMethodRef(parent_name, m->name, m_d);
+	}
 	method->id = m->number;
 	m->body = method->body;
 	m->nill_class_id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8("__BASE__"))));
@@ -240,6 +265,13 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case assign:
 		if (expr->left->type == var_or_method && std::find(method->local_variables.begin(), method->local_variables.end(), expr->left->str_val) == method->local_variables.end()) {
 			method->local_variables.push_back(expr->left->str_val);
+			if(expr->right->type == object_method_call)
+			{
+				if(std::string(expr->right->right->str_val) == std::string("new"))
+				{
+					method->local_variables_types[expr->left->str_val] = expr->right->left->str_val;
+				}
+			}
 		}
 		existsId(clazz, method, expr->right);
 		break;
@@ -392,7 +424,11 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 		}
 		else{
 			existsMethod(expr->str_val);
-			expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list)));
+			if(expr->method_call_type == 0)
+			{
+				expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list)));
+			}
+			else expr->id = clazz->pushOrFindMethodRef(expr->object_class_name, expr->str_val, method_descriptor(count_exprs(expr->list), expr->method_call_type));
 		}
 
 		break;
@@ -415,7 +451,17 @@ void fillTable(Clazz* clazz, Method* method, expr_struct* expr) {
 	case object_method_call:
 		existsId(clazz, method, expr->left);
 		existsId(clazz, method, expr->right);
-		expr->right->object_class_name = expr->left->str_val;
+		if(std::string(expr->right->str_val) == std::string("new"))
+		{
+			expr->right->str_val="<init>";
+			expr->left->id = clazz->pushConstant(Constant::Class(clazz->pushConstant(Constant::Utf8(expr->left->str_val))));
+			expr->right->object_class_name = expr->left->str_val;
+			expr->right->method_call_type = "V";
+		}
+		else
+		{
+			expr->right->object_class_name = strdup(method->local_variables_types[expr->left->str_val].c_str());
+		}
 		break;
 	default:
 		break;
@@ -464,6 +510,7 @@ bool existsIds(Clazz* clazz, Method* method, expr_list_struct* exprList) {
 }
 
 bool existsMethod(const std::string& methodName) {
+	if(methodName == "new")return true;
 	for (auto i : clazzesList) {
 		if (i.second->methods.find(methodName) != i.second->methods.end()) {
 			return true;
@@ -473,12 +520,21 @@ bool existsMethod(const std::string& methodName) {
 	return false;
 }
 
+std::string method_descriptor(int size, std::string output_type="L__BASE__;") {
+	std::string str = "(";
+	for (int i = 0; i < size; ++i) {
+		str += "L__BASE__;";
+	}
+	str += ")" + output_type;
+	return str;
+}
+
 std::string method_descriptor(int size) {
 	std::string str = "(";
 	for (int i = 0; i < size; ++i) {
 		str += "L__BASE__;";
 	}
-	str += ")L__BASE__;"; //!!!!!!!!!!!!!!!!!!!! TODO: FIX IT!!!!!!!!!!!!!!!!!
+	str += ")L__BASE__;";
 	return str;
 }
 

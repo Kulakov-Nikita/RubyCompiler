@@ -52,35 +52,36 @@ void generate_java(program_struct* program, const std::map<std::string, Clazz*>&
 		
 		// !!!!!!!!! METHODS !!!!!!
 		
-		// public 
-		std::cout << (char)0x00 << (char)0x01;
-		// init name
-		bytes = intToBytes(clazz.second->methods["<init>"]->nameNumber);
-		std::cout << bytes[2] << bytes[3];
-		// init descriptor ()V
-		bytes = intToBytes(clazz.second->methods["<init>"]->descriptorNumber);
-		std::cout << bytes[2] << bytes[3];
-		// method atributes count (01)
-		std::cout << (char)0x00 << (char)0x01;
-		// method atribute (Code - 0x01)
-		std::cout << (char)0x00 << (char)0x01;
+		// // public 
+		// std::cout << (char)0x00 << (char)0x01;
+		// // init name
+		// bytes = intToBytes(clazz.second->methods["<init>"]->nameNumber);
+		// std::cout << bytes[2] << bytes[3];
+		// // init descriptor ()V
+		// bytes = intToBytes(clazz.second->methods["<init>"]->descriptorNumber);
+		// std::cout << bytes[2] << bytes[3];
+		// // method atributes count (01)
+		// std::cout << (char)0x00 << (char)0x01;
+		// // method atribute (Code - 0x01)
+		// std::cout << (char)0x00 << (char)0x01;
 
-		// method code
-		std::vector<char> method_code_bytes = generateConstructor(clazz.second->methods["<init>"]);
-		// size of code
-		bytes = intToBytes(method_code_bytes.size());
-		for (auto i : bytes) {
-			std::cout << i;
-		}
+		// // method code
+		// std::vector<char> method_code_bytes = generateConstructor(clazz.second->methods["<init>"]);
+		// // size of code
+		// bytes = intToBytes(method_code_bytes.size());
+		// for (auto i : bytes) {
+		// 	std::cout << i;
+		// }
 
-		for (auto i : method_code_bytes) {
-			std::cout << i;
-		}
+		// for (auto i : method_code_bytes) {
+		// 	std::cout << i;
+		// }
 
 		for (auto i : clazz.second->methods) {
-			if (i.first != "<init>") {
-				generate_java(i.second);
-			}
+			// if (i.first != "<init>") {
+			// 	generate_java(i.second);
+			// }
+			generate_java(i.second);
 		}
 
 		// atributes
@@ -146,14 +147,22 @@ void generate_java(Method* method) {
 	std::vector<char> code_bytes = std::vector<char>();
 
 	// generate code.
+	if(method->name == "<init>"){
+	code_bytes.push_back((char)0x2A);  // aload_0
+	code_bytes.push_back((char)Command::invokespecial); // invoke special 
+	
+	// java/lang/Object.<init>()V					
+	tmp_bytes = intToBytes(method->self_method_ref);
+	code_bytes.push_back(tmp_bytes[2]);
+	code_bytes.push_back(tmp_bytes[3]);
+	}
 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!
 	if (method != 0 && method->body != 0) {
 		tmp_bytes = generate_java(method->body);
 		code_bytes.insert(code_bytes.end(), tmp_bytes.begin(), tmp_bytes.end());
 	}
 
-	if (method->name == "main") {
+	if (method->name == "main" || method->name == "<init>") {
 		code_bytes.push_back((char)Command::return_);
 	}
 	else {
@@ -574,6 +583,8 @@ std::vector<char> generate_java(expr_struct* expr) {
 		// TODO: Improve! (Now works only when left expression is localvar)
 		if(expr->left->type == instance_var)
 		{
+			resultCode.push_back((char)Command::aload);
+			resultCode.push_back((char)0);
 			tmp = generate_java(expr->right);
 			resultCode.insert(resultCode.end(), tmp.begin(), tmp.end());
 			//resultCode.push_back((char)Command::dup);
@@ -715,12 +726,26 @@ std::vector<char> generate_java(expr_struct* expr) {
 				c = c->next;
 			}
 		}
-		resultCode.push_back((char)Command::aload);
-		resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
-		resultCode.push_back((char)Command::invokevirtual);
-		tmp = intToBytes(expr->right->id);
-		resultCode.push_back(tmp[2]);
-		resultCode.push_back(tmp[3]);
+		if(std::string(expr->right->str_val) == std::string("<init>"))
+		{
+			resultCode.push_back((char)Command::new_);
+			tmp = intToBytes(expr->left->id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+			resultCode.push_back((char)Command::dup);
+			resultCode.push_back((char)Command::invokespecial);
+			tmp = intToBytes(expr->right->id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+		}
+		else{
+			resultCode.push_back((char)Command::aload);
+			resultCode.push_back(intToBytes(expr->left->local_var_num)[3]);
+			resultCode.push_back((char)Command::invokevirtual);
+			tmp = intToBytes(expr->right->id);
+			resultCode.push_back(tmp[2]);
+			resultCode.push_back(tmp[3]);
+		}
 		break;
 	case array:
 		resultCode.push_back((char)Command::new_);

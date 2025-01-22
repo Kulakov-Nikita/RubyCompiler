@@ -11,6 +11,7 @@ struct stmt_list_struct* create_stmt_list(struct stmt_struct* val);
 struct stmt_list_struct* add_to_stmt_list(struct stmt_list_struct* list, struct stmt_struct* val);
 
 std::string method_descriptor(int size);
+std::string method_descriptor(int size, std::string);
 
 struct Field {
 	bool isStatic;
@@ -24,6 +25,7 @@ struct Method {
 	bool isStatic;
 	std::string name;
 	std::vector<std::string> local_variables;
+	std::map<std::string, std::string> local_variables_types;
 	stmt_list_struct* body;
 	int number;
 	int nameNumber;
