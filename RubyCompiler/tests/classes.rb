@@ -1,14 +1,14 @@
 class Person
-  # Конструктор класса (метод initialize)
   def initialize(name, age)
     @name = name
-    @age = to_s(age)
+    @age = age
   end
 
   def introduce()
-    puts("Имя: " + @name +"\nВозраст: " + @age)
+    puts("Name: " + @name +"\nAge: " + @age)
   end
 end
 
-me = Person.new("Никита", 22)
+me = Person.new("Nikita", "22")
 me.introduce()
+

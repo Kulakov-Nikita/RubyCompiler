@@ -1,437 +1,437 @@
 digraph G {
-Id000001cedb6cce50 [label="program"]
-Id000001cedb6c1940 [label="stmt"]
-Id000001cedb6c18a0 [label="="]
-Id000001cedb6c1780 [label="var or method\n localnum = 1"]
-IdVal000001cedb6c1780 [label="str"]
-Id000001cedb6c1780->IdVal000001cedb6c1780
-Id000001cedb6c1820 [label="STRING\n mref = #17\n val_id = #11"]
-IdVal000001cedb6c1820 [label="Hello"]
-Id000001cedb6c1820->IdVal000001cedb6c1820
-Id000001cedb6c18a0->Id000001cedb6c1780
-Id000001cedb6c18a0->Id000001cedb6c1820
-Id000001cedb6c1940->Id000001cedb6c18a0
-Id000001cedb6cce50->Id000001cedb6c1940
-Id000001cedb6c1bc0 [label="stmt"]
-Id000001cedb6e6090 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e6090 [label="puts"]
-Id000001cedb6e6090->IdMethodNameVal000001cedb6e6090 [label="name"]
-Id000001cedb6c1b80 [label="params"]
-Id000001cedb6e6090->Id000001cedb6c1b80
-Id000001cedb6c1b00 [label="*\n mref = #25"]
-Id000001cedb6c1a00 [label="var or method\n localnum = 1"]
-IdVal000001cedb6c1a00 [label="str"]
-Id000001cedb6c1a00->IdVal000001cedb6c1a00
-Id000001cedb6c1a80 [label="INT\n mref = #29\n val_id = #26"]
-IdVal000001cedb6c1a80 [label="3"]
-Id000001cedb6c1a80->IdVal000001cedb6c1a80
-Id000001cedb6c1b00->Id000001cedb6c1a00
-Id000001cedb6c1b00->Id000001cedb6c1a80
-Id000001cedb6c1b80->Id000001cedb6c1b00
-Id000001cedb6c1bc0->Id000001cedb6e6090
-Id000001cedb6cce50->Id000001cedb6c1bc0
-Id000001cedb6e63c0 [label="stmt"]
-Id000001cedb6e6320 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e6320 [label="puts"]
-Id000001cedb6e6320->IdMethodNameVal000001cedb6e6320 [label="name"]
-Id000001cedb6e6300 [label="params"]
-Id000001cedb6e6320->Id000001cedb6e6300
-Id000001cedb6e6280 [label="+\n mref = #32"]
-Id000001cedb6e6160 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6160 [label="str"]
-Id000001cedb6e6160->IdVal000001cedb6e6160
-Id000001cedb6e6200 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6200 [label="str"]
-Id000001cedb6e6200->IdVal000001cedb6e6200
-Id000001cedb6e6280->Id000001cedb6e6160
-Id000001cedb6e6280->Id000001cedb6e6200
-Id000001cedb6e6300->Id000001cedb6e6280
-Id000001cedb6e63c0->Id000001cedb6e6320
-Id000001cedb6cce50->Id000001cedb6e63c0
-Id000001cedb6e66c0 [label="stmt"]
-Id000001cedb6e6620 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e6620 [label="puts"]
-Id000001cedb6e6620->IdMethodNameVal000001cedb6e6620 [label="name"]
-Id000001cedb6e6600 [label="params"]
-Id000001cedb6e6620->Id000001cedb6e6600
-Id000001cedb6e6500 [label="."]
-Id000001cedb6e6460 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6460 [label="str"]
-Id000001cedb6e6460->IdVal000001cedb6e6460
-Id000001cedb6e6580 [label="method_call\n mref = #36"]
-IdMethodNameVal000001cedb6e6580 [label="upcase"]
-Id000001cedb6e6580->IdMethodNameVal000001cedb6e6580 [label="name"]
-Id000001cedb6e6500->Id000001cedb6e6460 [label = "object"]
-Id000001cedb6e6500->Id000001cedb6e6580 [label = "method"]
-Id000001cedb6e6600->Id000001cedb6e6500
-Id000001cedb6e66c0->Id000001cedb6e6620
-Id000001cedb6cce50->Id000001cedb6e66c0
-Id000001cedb6e7cd0 [label="stmt"]
-Id000001cedb6e7750 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e7750 [label="puts"]
-Id000001cedb6e7750->IdMethodNameVal000001cedb6e7750 [label="name"]
-Id000001cedb6e7c90 [label="params"]
-Id000001cedb6e7750->Id000001cedb6e7c90
-Id000001cedb6e6800 [label="."]
-Id000001cedb6e6760 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6760 [label="str"]
-Id000001cedb6e6760->IdVal000001cedb6e6760
-Id000001cedb6e7050 [label="method_call\n mref = #39"]
-IdMethodNameVal000001cedb6e7050 [label="downcase"]
-Id000001cedb6e7050->IdMethodNameVal000001cedb6e7050 [label="name"]
-Id000001cedb6e6800->Id000001cedb6e6760 [label = "object"]
-Id000001cedb6e6800->Id000001cedb6e7050 [label = "method"]
-Id000001cedb6e7c90->Id000001cedb6e6800
-Id000001cedb6e7cd0->Id000001cedb6e7750
-Id000001cedb6cce50->Id000001cedb6e7cd0
-Id000001cedb6e7db0 [label="stmt"]
-Id000001cedb6e72d0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e72d0 [label="puts"]
-Id000001cedb6e72d0->IdMethodNameVal000001cedb6e72d0 [label="name"]
-Id000001cedb6e7d70 [label="params"]
-Id000001cedb6e72d0->Id000001cedb6e7d70
-Id000001cedb6e71d0 [label = "member access\n mref = #42"]
-Id000001cedb6e69d0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e69d0 [label="str"]
-Id000001cedb6e69d0->IdVal000001cedb6e69d0
-Id000001cedb6e6cd0 [label="INT\n mref = #29\n val_id = #43"]
-IdVal000001cedb6e6cd0 [label="1"]
-Id000001cedb6e6cd0->IdVal000001cedb6e6cd0
-Id000001cedb6e71d0->Id000001cedb6e69d0 [label = "array"]
-Id000001cedb6e71d0->Id000001cedb6e6cd0 [label = "index"]
-Id000001cedb6e7d70->Id000001cedb6e71d0
-Id000001cedb6e7db0->Id000001cedb6e72d0
-Id000001cedb6cce50->Id000001cedb6e7db0
-Id000001cedb6e7e70 [label="stmt"]
-Id000001cedb6e77d0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e77d0 [label="puts"]
-Id000001cedb6e77d0->IdMethodNameVal000001cedb6e77d0 [label="name"]
-Id000001cedb6e7e50 [label="params"]
-Id000001cedb6e77d0->Id000001cedb6e7e50
-Id000001cedb6e68d0 [label = "member access\n mref = #42"]
-Id000001cedb6e6dd0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6dd0 [label="str"]
-Id000001cedb6e6dd0->IdVal000001cedb6e6dd0
-Id000001cedb6e6b50 [label="unary -\n mref = #46"]
-Id000001cedb6e6ad0 [label="INT\n mref = #29\n val_id = #43"]
-IdVal000001cedb6e6ad0 [label="1"]
-Id000001cedb6e6ad0->IdVal000001cedb6e6ad0
-Id000001cedb6e6b50->Id000001cedb6e6ad0
-Id000001cedb6e68d0->Id000001cedb6e6dd0 [label = "array"]
-Id000001cedb6e68d0->Id000001cedb6e6b50 [label = "index"]
-Id000001cedb6e7e50->Id000001cedb6e68d0
-Id000001cedb6e7e70->Id000001cedb6e77d0
-Id000001cedb6cce50->Id000001cedb6e7e70
-Id000001cedb6e7f10 [label="stmt"]
-Id000001cedb6e6bd0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e6bd0 [label="puts"]
-Id000001cedb6e6bd0->IdMethodNameVal000001cedb6e6bd0 [label="name"]
-Id000001cedb6e7ef0 [label="params"]
-Id000001cedb6e6bd0->Id000001cedb6e7ef0
-Id000001cedb6e6950 [label="."]
-Id000001cedb6e6d50 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6d50 [label="str"]
-Id000001cedb6e6d50->IdVal000001cedb6e6d50
-Id000001cedb6e7650 [label="method_call\n mref = #49"]
-IdMethodNameVal000001cedb6e7650 [label="length"]
-Id000001cedb6e7650->IdMethodNameVal000001cedb6e7650 [label="name"]
-Id000001cedb6e6950->Id000001cedb6e6d50 [label = "object"]
-Id000001cedb6e6950->Id000001cedb6e7650 [label = "method"]
-Id000001cedb6e7ef0->Id000001cedb6e6950
-Id000001cedb6e7f10->Id000001cedb6e6bd0
-Id000001cedb6cce50->Id000001cedb6e7f10
-Id000001cedb6ca010 [label="stmt"]
-Id000001cedb6e73d0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e73d0 [label="puts"]
-Id000001cedb6e73d0->IdMethodNameVal000001cedb6e73d0 [label="name"]
-Id000001cedb6e7f90 [label="params"]
-Id000001cedb6e73d0->Id000001cedb6e7f90
-Id000001cedb6e7250 [label="."]
-Id000001cedb6e6ed0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6ed0 [label="str"]
-Id000001cedb6e6ed0->IdVal000001cedb6e6ed0
-Id000001cedb6e6a50 [label="method_call\n mref = #52"]
-IdMethodNameVal000001cedb6e6a50 [label="size"]
-Id000001cedb6e6a50->IdMethodNameVal000001cedb6e6a50 [label="name"]
-Id000001cedb6e7250->Id000001cedb6e6ed0 [label = "object"]
-Id000001cedb6e7250->Id000001cedb6e6a50 [label = "method"]
-Id000001cedb6e7f90->Id000001cedb6e7250
-Id000001cedb6ca010->Id000001cedb6e73d0
-Id000001cedb6cce50->Id000001cedb6ca010
-Id000001cedb6ca0d0 [label="stmt"]
-Id000001cedb6e70d0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e70d0 [label="puts"]
-Id000001cedb6e70d0->IdMethodNameVal000001cedb6e70d0 [label="name"]
-Id000001cedb6ca0b0 [label="params"]
-Id000001cedb6e70d0->Id000001cedb6ca0b0
-Id000001cedb6e6f50 [label="."]
-Id000001cedb6e6c50 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e6c50 [label="str"]
-Id000001cedb6e6c50->IdVal000001cedb6e6c50
-Id000001cedb6e6fd0 [label="method_call\n mref = #55"]
-IdMethodNameVal000001cedb6e6fd0 [label="include?"]
-Id000001cedb6e6fd0->IdMethodNameVal000001cedb6e6fd0 [label="name"]
-Id000001cedb6ca090 [label="params"]
-Id000001cedb6e6fd0->Id000001cedb6ca090
-Id000001cedb6e6e50 [label="STRING\n mref = #17\n val_id = #57"]
-IdVal000001cedb6e6e50 [label="ell"]
-Id000001cedb6e6e50->IdVal000001cedb6e6e50
-Id000001cedb6ca090->Id000001cedb6e6e50
-Id000001cedb6e6f50->Id000001cedb6e6c50 [label = "object"]
-Id000001cedb6e6f50->Id000001cedb6e6fd0 [label = "method"]
-Id000001cedb6ca0b0->Id000001cedb6e6f50
-Id000001cedb6ca0d0->Id000001cedb6e70d0
-Id000001cedb6cce50->Id000001cedb6ca0d0
-Id000001cedb6ca560 [label="stmt"]
-Id000001cedb6e75d0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6e75d0 [label="puts"]
-Id000001cedb6e75d0->IdMethodNameVal000001cedb6e75d0 [label="name"]
-Id000001cedb6ca4c0 [label="params"]
-Id000001cedb6e75d0->Id000001cedb6ca4c0
-Id000001cedb6e74d0 [label="."]
-Id000001cedb6e7150 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e7150 [label="str"]
-Id000001cedb6e7150->IdVal000001cedb6e7150
-Id000001cedb6e7550 [label="method_call\n mref = #61"]
-IdMethodNameVal000001cedb6e7550 [label="gsub"]
-Id000001cedb6e7550->IdMethodNameVal000001cedb6e7550 [label="name"]
-Id000001cedb6ca4a0 [label="params"]
-Id000001cedb6e7550->Id000001cedb6ca4a0
-Id000001cedb6e7450 [label="STRING\n mref = #17\n val_id = #63"]
-IdVal000001cedb6e7450 [label="l"]
-Id000001cedb6e7450->IdVal000001cedb6e7450
-Id000001cedb6ca4a0->Id000001cedb6e7450
-Id000001cedb6e7350 [label="STRING\n mref = #17\n val_id = #65"]
-IdVal000001cedb6e7350 [label="x"]
-Id000001cedb6e7350->IdVal000001cedb6e7350
-Id000001cedb6ca4a0->Id000001cedb6e7350
-Id000001cedb6e74d0->Id000001cedb6e7150 [label = "object"]
-Id000001cedb6e74d0->Id000001cedb6e7550 [label = "method"]
-Id000001cedb6ca4c0->Id000001cedb6e74d0
-Id000001cedb6ca560->Id000001cedb6e75d0
-Id000001cedb6cce50->Id000001cedb6ca560
-Id000001cedb6cc5f0 [label="stmt"]
-Id000001cedb6caf30 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6caf30 [label="puts"]
-Id000001cedb6caf30->IdMethodNameVal000001cedb6caf30 [label="name"]
-Id000001cedb6ca1a0 [label="params"]
-Id000001cedb6caf30->Id000001cedb6ca1a0
-Id000001cedb6cb030 [label="."]
-Id000001cedb6e76d0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6e76d0 [label="str"]
-Id000001cedb6e76d0->IdVal000001cedb6e76d0
-Id000001cedb6cb4b0 [label="method_call\n mref = #68"]
-IdMethodNameVal000001cedb6cb4b0 [label="sub"]
-Id000001cedb6cb4b0->IdMethodNameVal000001cedb6cb4b0 [label="name"]
-Id000001cedb6ca480 [label="params"]
-Id000001cedb6cb4b0->Id000001cedb6ca480
-Id000001cedb6cb230 [label="STRING\n mref = #17\n val_id = #63"]
-IdVal000001cedb6cb230 [label="l"]
-Id000001cedb6cb230->IdVal000001cedb6cb230
-Id000001cedb6ca480->Id000001cedb6cb230
-Id000001cedb6cae30 [label="STRING\n mref = #17\n val_id = #65"]
-IdVal000001cedb6cae30 [label="x"]
-Id000001cedb6cae30->IdVal000001cedb6cae30
-Id000001cedb6ca480->Id000001cedb6cae30
-Id000001cedb6cb030->Id000001cedb6e76d0 [label = "object"]
-Id000001cedb6cb030->Id000001cedb6cb4b0 [label = "method"]
-Id000001cedb6ca1a0->Id000001cedb6cb030
-Id000001cedb6cc5f0->Id000001cedb6caf30
-Id000001cedb6cce50->Id000001cedb6cc5f0
-Id000001cedb6cc670 [label="stmt"]
-Id000001cedb6cbb30 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6cbb30 [label="puts"]
-Id000001cedb6cbb30->IdMethodNameVal000001cedb6cbb30 [label="name"]
-Id000001cedb6ca300 [label="params"]
-Id000001cedb6cbb30->Id000001cedb6ca300
-Id000001cedb6cc0b0 [label="."]
-Id000001cedb6cc330 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cc330 [label="str"]
-Id000001cedb6cc330->IdVal000001cedb6cc330
-Id000001cedb6cac30 [label="method_call\n mref = #71"]
-IdMethodNameVal000001cedb6cac30 [label="split"]
-Id000001cedb6cac30->IdMethodNameVal000001cedb6cac30 [label="name"]
-Id000001cedb6ca1c0 [label="params"]
-Id000001cedb6cac30->Id000001cedb6ca1c0
-Id000001cedb6cba30 [label="STRING\n mref = #17\n val_id = #63"]
-IdVal000001cedb6cba30 [label="l"]
-Id000001cedb6cba30->IdVal000001cedb6cba30
-Id000001cedb6ca1c0->Id000001cedb6cba30
-Id000001cedb6cc0b0->Id000001cedb6cc330 [label = "object"]
-Id000001cedb6cc0b0->Id000001cedb6cac30 [label = "method"]
-Id000001cedb6ca300->Id000001cedb6cc0b0
-Id000001cedb6cc670->Id000001cedb6cbb30
-Id000001cedb6cce50->Id000001cedb6cc670
-Id000001cedb6ccee0 [label="stmt"]
-Id000001cedb6cbab0 [label="="]
-Id000001cedb6cbbb0 [label="var or method\n localnum = 2"]
-IdVal000001cedb6cbbb0 [label="array"]
-Id000001cedb6cbbb0->IdVal000001cedb6cbbb0
-Id000001cedb6cb0b0 [label = "array"]
-Id000001cedb6ca930 [label="STRING\n mref = #17\n val_id = #87"]
-IdVal000001cedb6ca930 [label="1"]
-Id000001cedb6ca930->IdVal000001cedb6ca930
-Id000001cedb6cb0b0->Id000001cedb6ca930
-Id000001cedb6cc3b0 [label="STRING\n mref = #17\n val_id = #89"]
-IdVal000001cedb6cc3b0 [label="2"]
-Id000001cedb6cc3b0->IdVal000001cedb6cc3b0
-Id000001cedb6cb0b0->Id000001cedb6cc3b0
-Id000001cedb6cc430 [label="STRING\n mref = #17\n val_id = #91"]
-IdVal000001cedb6cc430 [label="3"]
-Id000001cedb6cc430->IdVal000001cedb6cc430
-Id000001cedb6cb0b0->Id000001cedb6cc430
-Id000001cedb6cbab0->Id000001cedb6cbbb0
-Id000001cedb6cbab0->Id000001cedb6cb0b0
-Id000001cedb6ccee0->Id000001cedb6cbab0
-Id000001cedb6cce50->Id000001cedb6ccee0
-Id000001cedb6ccf30 [label="stmt"]
-Id000001cedb6cbdb0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6cbdb0 [label="puts"]
-Id000001cedb6cbdb0->IdMethodNameVal000001cedb6cbdb0 [label="name"]
-Id000001cedb6ca280 [label="params"]
-Id000001cedb6cbdb0->Id000001cedb6ca280
-Id000001cedb6cc030 [label="."]
-Id000001cedb6cbc30 [label="var or method\n localnum = 2"]
-IdVal000001cedb6cbc30 [label="array"]
-Id000001cedb6cbc30->IdVal000001cedb6cbc30
-Id000001cedb6cc130 [label="method_call\n mref = #94"]
-IdMethodNameVal000001cedb6cc130 [label="join"]
-Id000001cedb6cc130->IdMethodNameVal000001cedb6cc130 [label="name"]
-Id000001cedb6ca220 [label="params"]
-Id000001cedb6cc130->Id000001cedb6ca220
-Id000001cedb6cacb0 [label="STRING\n mref = #17\n val_id = #96"]
-IdVal000001cedb6cacb0 [label=","]
-Id000001cedb6cacb0->IdVal000001cedb6cacb0
-Id000001cedb6ca220->Id000001cedb6cacb0
-Id000001cedb6cc030->Id000001cedb6cbc30 [label = "object"]
-Id000001cedb6cc030->Id000001cedb6cc130 [label = "method"]
-Id000001cedb6ca280->Id000001cedb6cc030
-Id000001cedb6ccf30->Id000001cedb6cbdb0
-Id000001cedb6cce50->Id000001cedb6ccf30
-Id000001cedb6cd200 [label="stmt"]
-Id000001cedb6cc4b0 [label="="]
-Id000001cedb6cb430 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cb430 [label="str"]
-Id000001cedb6cb430->IdVal000001cedb6cb430
-Id000001cedb6cb6b0 [label="STRING\n mref = #17\n val_id = #98"]
-IdVal000001cedb6cb6b0 [label="  hello  "]
-Id000001cedb6cb6b0->IdVal000001cedb6cb6b0
-Id000001cedb6cc4b0->Id000001cedb6cb430
-Id000001cedb6cc4b0->Id000001cedb6cb6b0
-Id000001cedb6cd200->Id000001cedb6cc4b0
-Id000001cedb6cce50->Id000001cedb6cd200
-Id000001cedb6cd480 [label="stmt"]
-Id000001cedb6cc1b0 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6cc1b0 [label="puts"]
-Id000001cedb6cc1b0->IdMethodNameVal000001cedb6cc1b0 [label="name"]
-Id000001cedb6ca240 [label="params"]
-Id000001cedb6cc1b0->Id000001cedb6ca240
-Id000001cedb6cbeb0 [label="."]
-Id000001cedb6cb530 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cb530 [label="str"]
-Id000001cedb6cb530->IdVal000001cedb6cb530
-Id000001cedb6cadb0 [label="method_call\n mref = #101"]
-IdMethodNameVal000001cedb6cadb0 [label="strip"]
-Id000001cedb6cadb0->IdMethodNameVal000001cedb6cadb0 [label="name"]
-Id000001cedb6cbeb0->Id000001cedb6cb530 [label = "object"]
-Id000001cedb6cbeb0->Id000001cedb6cadb0 [label = "method"]
-Id000001cedb6ca240->Id000001cedb6cbeb0
-Id000001cedb6cd480->Id000001cedb6cc1b0
-Id000001cedb6cce50->Id000001cedb6cd480
-Id000001cedb6cd570 [label="stmt"]
-Id000001cedb6cc530 [label="="]
-Id000001cedb6cafb0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cafb0 [label="str"]
-Id000001cedb6cafb0->IdVal000001cedb6cafb0
-Id000001cedb6cb130 [label="STRING\n mref = #17\n val_id = #103"]
-IdVal000001cedb6cb130 [label="hello"]
-Id000001cedb6cb130->IdVal000001cedb6cb130
-Id000001cedb6cc530->Id000001cedb6cafb0
-Id000001cedb6cc530->Id000001cedb6cb130
-Id000001cedb6cd570->Id000001cedb6cc530
-Id000001cedb6cce50->Id000001cedb6cd570
-Id000001cedb6cd5c0 [label="stmt"]
-Id000001cedb6caa30 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6caa30 [label="puts"]
-Id000001cedb6caa30->IdMethodNameVal000001cedb6caa30 [label="name"]
-Id000001cedb6ca520 [label="params"]
-Id000001cedb6caa30->Id000001cedb6ca520
-Id000001cedb6cbfb0 [label="."]
-Id000001cedb6cc230 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cc230 [label="str"]
-Id000001cedb6cc230->IdVal000001cedb6cc230
-Id000001cedb6cb2b0 [label="method_call\n mref = #106"]
-IdMethodNameVal000001cedb6cb2b0 [label="reverse"]
-Id000001cedb6cb2b0->IdMethodNameVal000001cedb6cb2b0 [label="name"]
-Id000001cedb6cbfb0->Id000001cedb6cc230 [label = "object"]
-Id000001cedb6cbfb0->Id000001cedb6cb2b0 [label = "method"]
-Id000001cedb6ca520->Id000001cedb6cbfb0
-Id000001cedb6cd5c0->Id000001cedb6caa30
-Id000001cedb6cce50->Id000001cedb6cd5c0
-Id000001cedb6cd610 [label="stmt"]
-Id000001cedb6cb630 [label="="]
-Id000001cedb6caab0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6caab0 [label="str"]
-Id000001cedb6caab0->IdVal000001cedb6caab0
-Id000001cedb6ca630 [label="STRING\n mref = #17\n val_id = #108"]
-IdVal000001cedb6ca630 [label=""]
-Id000001cedb6ca630->IdVal000001cedb6ca630
-Id000001cedb6cb630->Id000001cedb6caab0
-Id000001cedb6cb630->Id000001cedb6ca630
-Id000001cedb6cd610->Id000001cedb6cb630
-Id000001cedb6cce50->Id000001cedb6cd610
-Id000001cedb6cd4d0 [label="stmt"]
-Id000001cedb6cbd30 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6cbd30 [label="puts"]
-Id000001cedb6cbd30->IdMethodNameVal000001cedb6cbd30 [label="name"]
-Id000001cedb6ca2a0 [label="params"]
-Id000001cedb6cbd30->Id000001cedb6ca2a0
-Id000001cedb6cb1b0 [label="."]
-Id000001cedb6cbcb0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cbcb0 [label="str"]
-Id000001cedb6cbcb0->IdVal000001cedb6cbcb0
-Id000001cedb6ca830 [label="method_call\n mref = #111"]
-IdMethodNameVal000001cedb6ca830 [label="empty?"]
-Id000001cedb6ca830->IdMethodNameVal000001cedb6ca830 [label="name"]
-Id000001cedb6cb1b0->Id000001cedb6cbcb0 [label = "object"]
-Id000001cedb6cb1b0->Id000001cedb6ca830 [label = "method"]
-Id000001cedb6ca2a0->Id000001cedb6cb1b0
-Id000001cedb6cd4d0->Id000001cedb6cbd30
-Id000001cedb6cce50->Id000001cedb6cd4d0
-Id000001cedb6cd660 [label="stmt"]
-Id000001cedb6caeb0 [label="="]
-Id000001cedb6cb7b0 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cb7b0 [label="str"]
-Id000001cedb6cb7b0->IdVal000001cedb6cb7b0
-Id000001cedb6cbe30 [label="STRING\n mref = #17\n val_id = #113"]
-IdVal000001cedb6cbe30 [label="123"]
-Id000001cedb6cbe30->IdVal000001cedb6cbe30
-Id000001cedb6caeb0->Id000001cedb6cb7b0
-Id000001cedb6caeb0->Id000001cedb6cbe30
-Id000001cedb6cd660->Id000001cedb6caeb0
-Id000001cedb6cce50->Id000001cedb6cd660
-Id000001cedb6cd6b0 [label="stmt"]
-Id000001cedb6cb330 [label="method_call\n mref = #21"]
-IdMethodNameVal000001cedb6cb330 [label="puts"]
-Id000001cedb6cb330->IdMethodNameVal000001cedb6cb330 [label="name"]
-Id000001cedb6ca4e0 [label="params"]
-Id000001cedb6cb330->Id000001cedb6ca4e0
-Id000001cedb6ca6b0 [label="+\n mref = #32"]
-Id000001cedb6ca8b0 [label="."]
-Id000001cedb6cad30 [label="var or method\n localnum = 1"]
-IdVal000001cedb6cad30 [label="str"]
-Id000001cedb6cad30->IdVal000001cedb6cad30
-Id000001cedb6cbf30 [label="method_call\n mref = #116"]
-IdMethodNameVal000001cedb6cbf30 [label="to_i"]
-Id000001cedb6cbf30->IdMethodNameVal000001cedb6cbf30 [label="name"]
-Id000001cedb6ca8b0->Id000001cedb6cad30 [label = "object"]
-Id000001cedb6ca8b0->Id000001cedb6cbf30 [label = "method"]
-Id000001cedb6cc2b0 [label="INT\n mref = #29\n val_id = #117"]
-IdVal000001cedb6cc2b0 [label="321"]
-Id000001cedb6cc2b0->IdVal000001cedb6cc2b0
-Id000001cedb6ca6b0->Id000001cedb6ca8b0
-Id000001cedb6ca6b0->Id000001cedb6cc2b0
-Id000001cedb6ca4e0->Id000001cedb6ca6b0
-Id000001cedb6cd6b0->Id000001cedb6cb330
-Id000001cedb6cce50->Id000001cedb6cd6b0
+Id000001e4c586ce40 [label="program"]
+Id000001e4c5861940 [label="stmt"]
+Id000001e4c58618a0 [label="="]
+Id000001e4c5861780 [label="var or method\n localnum = 1"]
+IdVal000001e4c5861780 [label="str"]
+Id000001e4c5861780->IdVal000001e4c5861780
+Id000001e4c5861820 [label="STRING\n mref = #17\n val_id = #11"]
+IdVal000001e4c5861820 [label="Hello"]
+Id000001e4c5861820->IdVal000001e4c5861820
+Id000001e4c58618a0->Id000001e4c5861780
+Id000001e4c58618a0->Id000001e4c5861820
+Id000001e4c5861940->Id000001e4c58618a0
+Id000001e4c586ce40->Id000001e4c5861940
+Id000001e4c5861bc0 [label="stmt"]
+Id000001e4c5886090 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886090 [label="puts"]
+Id000001e4c5886090->IdMethodNameVal000001e4c5886090 [label="name"]
+Id000001e4c5861b80 [label="params"]
+Id000001e4c5886090->Id000001e4c5861b80
+Id000001e4c5861b00 [label="*\n mref = #25"]
+Id000001e4c5861a00 [label="var or method\n localnum = 1"]
+IdVal000001e4c5861a00 [label="str"]
+Id000001e4c5861a00->IdVal000001e4c5861a00
+Id000001e4c5861a80 [label="INT\n mref = #29\n val_id = #26"]
+IdVal000001e4c5861a80 [label="3"]
+Id000001e4c5861a80->IdVal000001e4c5861a80
+Id000001e4c5861b00->Id000001e4c5861a00
+Id000001e4c5861b00->Id000001e4c5861a80
+Id000001e4c5861b80->Id000001e4c5861b00
+Id000001e4c5861bc0->Id000001e4c5886090
+Id000001e4c586ce40->Id000001e4c5861bc0
+Id000001e4c58863c0 [label="stmt"]
+Id000001e4c5886320 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886320 [label="puts"]
+Id000001e4c5886320->IdMethodNameVal000001e4c5886320 [label="name"]
+Id000001e4c5886300 [label="params"]
+Id000001e4c5886320->Id000001e4c5886300
+Id000001e4c5886280 [label="+\n mref = #32"]
+Id000001e4c5886160 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886160 [label="str"]
+Id000001e4c5886160->IdVal000001e4c5886160
+Id000001e4c5886200 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886200 [label="str"]
+Id000001e4c5886200->IdVal000001e4c5886200
+Id000001e4c5886280->Id000001e4c5886160
+Id000001e4c5886280->Id000001e4c5886200
+Id000001e4c5886300->Id000001e4c5886280
+Id000001e4c58863c0->Id000001e4c5886320
+Id000001e4c586ce40->Id000001e4c58863c0
+Id000001e4c58866c0 [label="stmt"]
+Id000001e4c5886620 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886620 [label="puts"]
+Id000001e4c5886620->IdMethodNameVal000001e4c5886620 [label="name"]
+Id000001e4c5886600 [label="params"]
+Id000001e4c5886620->Id000001e4c5886600
+Id000001e4c5886500 [label="."]
+Id000001e4c5886460 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886460 [label="str"]
+Id000001e4c5886460->IdVal000001e4c5886460
+Id000001e4c5886580 [label="method_call\n mref = #36"]
+IdMethodNameVal000001e4c5886580 [label="upcase"]
+Id000001e4c5886580->IdMethodNameVal000001e4c5886580 [label="name"]
+Id000001e4c5886500->Id000001e4c5886460 [label = "object"]
+Id000001e4c5886500->Id000001e4c5886580 [label = "method"]
+Id000001e4c5886600->Id000001e4c5886500
+Id000001e4c58866c0->Id000001e4c5886620
+Id000001e4c586ce40->Id000001e4c58866c0
+Id000001e4c5887cd0 [label="stmt"]
+Id000001e4c5886cd0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886cd0 [label="puts"]
+Id000001e4c5886cd0->IdMethodNameVal000001e4c5886cd0 [label="name"]
+Id000001e4c5887c90 [label="params"]
+Id000001e4c5886cd0->Id000001e4c5887c90
+Id000001e4c5886800 [label="."]
+Id000001e4c5886760 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886760 [label="str"]
+Id000001e4c5886760->IdVal000001e4c5886760
+Id000001e4c58874d0 [label="method_call\n mref = #39"]
+IdMethodNameVal000001e4c58874d0 [label="downcase"]
+Id000001e4c58874d0->IdMethodNameVal000001e4c58874d0 [label="name"]
+Id000001e4c5886800->Id000001e4c5886760 [label = "object"]
+Id000001e4c5886800->Id000001e4c58874d0 [label = "method"]
+Id000001e4c5887c90->Id000001e4c5886800
+Id000001e4c5887cd0->Id000001e4c5886cd0
+Id000001e4c586ce40->Id000001e4c5887cd0
+Id000001e4c5887db0 [label="stmt"]
+Id000001e4c58873d0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c58873d0 [label="puts"]
+Id000001e4c58873d0->IdMethodNameVal000001e4c58873d0 [label="name"]
+Id000001e4c5887d70 [label="params"]
+Id000001e4c58873d0->Id000001e4c5887d70
+Id000001e4c5887750 [label = "member access\n mref = #42"]
+Id000001e4c58869d0 [label="var or method\n localnum = 1"]
+IdVal000001e4c58869d0 [label="str"]
+Id000001e4c58869d0->IdVal000001e4c58869d0
+Id000001e4c5887350 [label="INT\n mref = #29\n val_id = #43"]
+IdVal000001e4c5887350 [label="1"]
+Id000001e4c5887350->IdVal000001e4c5887350
+Id000001e4c5887750->Id000001e4c58869d0 [label = "array"]
+Id000001e4c5887750->Id000001e4c5887350 [label = "index"]
+Id000001e4c5887d70->Id000001e4c5887750
+Id000001e4c5887db0->Id000001e4c58873d0
+Id000001e4c586ce40->Id000001e4c5887db0
+Id000001e4c5887e70 [label="stmt"]
+Id000001e4c5886fd0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886fd0 [label="puts"]
+Id000001e4c5886fd0->IdMethodNameVal000001e4c5886fd0 [label="name"]
+Id000001e4c5887e50 [label="params"]
+Id000001e4c5886fd0->Id000001e4c5887e50
+Id000001e4c5887550 [label = "member access\n mref = #42"]
+Id000001e4c5886a50 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886a50 [label="str"]
+Id000001e4c5886a50->IdVal000001e4c5886a50
+Id000001e4c5886ad0 [label="unary -\n mref = #46"]
+Id000001e4c5886f50 [label="INT\n mref = #29\n val_id = #43"]
+IdVal000001e4c5886f50 [label="1"]
+Id000001e4c5886f50->IdVal000001e4c5886f50
+Id000001e4c5886ad0->Id000001e4c5886f50
+Id000001e4c5887550->Id000001e4c5886a50 [label = "array"]
+Id000001e4c5887550->Id000001e4c5886ad0 [label = "index"]
+Id000001e4c5887e50->Id000001e4c5887550
+Id000001e4c5887e70->Id000001e4c5886fd0
+Id000001e4c586ce40->Id000001e4c5887e70
+Id000001e4c5887f10 [label="stmt"]
+Id000001e4c5886d50 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5886d50 [label="puts"]
+Id000001e4c5886d50->IdMethodNameVal000001e4c5886d50 [label="name"]
+Id000001e4c5887ef0 [label="params"]
+Id000001e4c5886d50->Id000001e4c5887ef0
+Id000001e4c5886bd0 [label="."]
+Id000001e4c5886b50 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886b50 [label="str"]
+Id000001e4c5886b50->IdVal000001e4c5886b50
+Id000001e4c5886c50 [label="method_call\n mref = #49"]
+IdMethodNameVal000001e4c5886c50 [label="length"]
+Id000001e4c5886c50->IdMethodNameVal000001e4c5886c50 [label="name"]
+Id000001e4c5886bd0->Id000001e4c5886b50 [label = "object"]
+Id000001e4c5886bd0->Id000001e4c5886c50 [label = "method"]
+Id000001e4c5887ef0->Id000001e4c5886bd0
+Id000001e4c5887f10->Id000001e4c5886d50
+Id000001e4c586ce40->Id000001e4c5887f10
+Id000001e4c586a010 [label="stmt"]
+Id000001e4c5887450 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5887450 [label="puts"]
+Id000001e4c5887450->IdMethodNameVal000001e4c5887450 [label="name"]
+Id000001e4c5887f90 [label="params"]
+Id000001e4c5887450->Id000001e4c5887f90
+Id000001e4c5886dd0 [label="."]
+Id000001e4c5887050 [label="var or method\n localnum = 1"]
+IdVal000001e4c5887050 [label="str"]
+Id000001e4c5887050->IdVal000001e4c5887050
+Id000001e4c5886e50 [label="method_call\n mref = #52"]
+IdMethodNameVal000001e4c5886e50 [label="size"]
+Id000001e4c5886e50->IdMethodNameVal000001e4c5886e50 [label="name"]
+Id000001e4c5886dd0->Id000001e4c5887050 [label = "object"]
+Id000001e4c5886dd0->Id000001e4c5886e50 [label = "method"]
+Id000001e4c5887f90->Id000001e4c5886dd0
+Id000001e4c586a010->Id000001e4c5887450
+Id000001e4c586ce40->Id000001e4c586a010
+Id000001e4c586a0d0 [label="stmt"]
+Id000001e4c5887150 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c5887150 [label="puts"]
+Id000001e4c5887150->IdMethodNameVal000001e4c5887150 [label="name"]
+Id000001e4c586a0b0 [label="params"]
+Id000001e4c5887150->Id000001e4c586a0b0
+Id000001e4c58870d0 [label="."]
+Id000001e4c58875d0 [label="var or method\n localnum = 1"]
+IdVal000001e4c58875d0 [label="str"]
+Id000001e4c58875d0->IdVal000001e4c58875d0
+Id000001e4c5887250 [label="method_call\n mref = #55"]
+IdMethodNameVal000001e4c5887250 [label="include?"]
+Id000001e4c5887250->IdMethodNameVal000001e4c5887250 [label="name"]
+Id000001e4c586a090 [label="params"]
+Id000001e4c5887250->Id000001e4c586a090
+Id000001e4c5886ed0 [label="STRING\n mref = #17\n val_id = #57"]
+IdVal000001e4c5886ed0 [label="ell"]
+Id000001e4c5886ed0->IdVal000001e4c5886ed0
+Id000001e4c586a090->Id000001e4c5886ed0
+Id000001e4c58870d0->Id000001e4c58875d0 [label = "object"]
+Id000001e4c58870d0->Id000001e4c5887250 [label = "method"]
+Id000001e4c586a0b0->Id000001e4c58870d0
+Id000001e4c586a0d0->Id000001e4c5887150
+Id000001e4c586ce40->Id000001e4c586a0d0
+Id000001e4c586a560 [label="stmt"]
+Id000001e4c58868d0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c58868d0 [label="puts"]
+Id000001e4c58868d0->IdMethodNameVal000001e4c58868d0 [label="name"]
+Id000001e4c586a480 [label="params"]
+Id000001e4c58868d0->Id000001e4c586a480
+Id000001e4c58877d0 [label="."]
+Id000001e4c58871d0 [label="var or method\n localnum = 1"]
+IdVal000001e4c58871d0 [label="str"]
+Id000001e4c58871d0->IdVal000001e4c58871d0
+Id000001e4c58876d0 [label="method_call\n mref = #61"]
+IdMethodNameVal000001e4c58876d0 [label="gsub"]
+Id000001e4c58876d0->IdMethodNameVal000001e4c58876d0 [label="name"]
+Id000001e4c586a220 [label="params"]
+Id000001e4c58876d0->Id000001e4c586a220
+Id000001e4c5887650 [label="STRING\n mref = #17\n val_id = #63"]
+IdVal000001e4c5887650 [label="l"]
+Id000001e4c5887650->IdVal000001e4c5887650
+Id000001e4c586a220->Id000001e4c5887650
+Id000001e4c58872d0 [label="STRING\n mref = #17\n val_id = #65"]
+IdVal000001e4c58872d0 [label="x"]
+Id000001e4c58872d0->IdVal000001e4c58872d0
+Id000001e4c586a220->Id000001e4c58872d0
+Id000001e4c58877d0->Id000001e4c58871d0 [label = "object"]
+Id000001e4c58877d0->Id000001e4c58876d0 [label = "method"]
+Id000001e4c586a480->Id000001e4c58877d0
+Id000001e4c586a560->Id000001e4c58868d0
+Id000001e4c586ce40->Id000001e4c586a560
+Id000001e4c586c5f0 [label="stmt"]
+Id000001e4c586b430 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586b430 [label="puts"]
+Id000001e4c586b430->IdMethodNameVal000001e4c586b430 [label="name"]
+Id000001e4c586a3e0 [label="params"]
+Id000001e4c586b430->Id000001e4c586a3e0
+Id000001e4c586bcb0 [label="."]
+Id000001e4c5886950 [label="var or method\n localnum = 1"]
+IdVal000001e4c5886950 [label="str"]
+Id000001e4c5886950->IdVal000001e4c5886950
+Id000001e4c586c430 [label="method_call\n mref = #68"]
+IdMethodNameVal000001e4c586c430 [label="sub"]
+Id000001e4c586c430->IdMethodNameVal000001e4c586c430 [label="name"]
+Id000001e4c586a240 [label="params"]
+Id000001e4c586c430->Id000001e4c586a240
+Id000001e4c586c330 [label="STRING\n mref = #17\n val_id = #63"]
+IdVal000001e4c586c330 [label="l"]
+Id000001e4c586c330->IdVal000001e4c586c330
+Id000001e4c586a240->Id000001e4c586c330
+Id000001e4c586b6b0 [label="STRING\n mref = #17\n val_id = #65"]
+IdVal000001e4c586b6b0 [label="x"]
+Id000001e4c586b6b0->IdVal000001e4c586b6b0
+Id000001e4c586a240->Id000001e4c586b6b0
+Id000001e4c586bcb0->Id000001e4c5886950 [label = "object"]
+Id000001e4c586bcb0->Id000001e4c586c430 [label = "method"]
+Id000001e4c586a3e0->Id000001e4c586bcb0
+Id000001e4c586c5f0->Id000001e4c586b430
+Id000001e4c586ce40->Id000001e4c586c5f0
+Id000001e4c586c670 [label="stmt"]
+Id000001e4c586c2b0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586c2b0 [label="puts"]
+Id000001e4c586c2b0->IdMethodNameVal000001e4c586c2b0 [label="name"]
+Id000001e4c586a3a0 [label="params"]
+Id000001e4c586c2b0->Id000001e4c586a3a0
+Id000001e4c586af30 [label="."]
+Id000001e4c586b230 [label="var or method\n localnum = 1"]
+IdVal000001e4c586b230 [label="str"]
+Id000001e4c586b230->IdVal000001e4c586b230
+Id000001e4c586ad30 [label="method_call\n mref = #71"]
+IdMethodNameVal000001e4c586ad30 [label="split"]
+Id000001e4c586ad30->IdMethodNameVal000001e4c586ad30 [label="name"]
+Id000001e4c586a2e0 [label="params"]
+Id000001e4c586ad30->Id000001e4c586a2e0
+Id000001e4c586a6b0 [label="STRING\n mref = #17\n val_id = #63"]
+IdVal000001e4c586a6b0 [label="l"]
+Id000001e4c586a6b0->IdVal000001e4c586a6b0
+Id000001e4c586a2e0->Id000001e4c586a6b0
+Id000001e4c586af30->Id000001e4c586b230 [label = "object"]
+Id000001e4c586af30->Id000001e4c586ad30 [label = "method"]
+Id000001e4c586a3a0->Id000001e4c586af30
+Id000001e4c586c670->Id000001e4c586c2b0
+Id000001e4c586ce40->Id000001e4c586c670
+Id000001e4c586cee0 [label="stmt"]
+Id000001e4c586a7b0 [label="="]
+Id000001e4c586a730 [label="var or method\n localnum = 2"]
+IdVal000001e4c586a730 [label="array"]
+Id000001e4c586a730->IdVal000001e4c586a730
+Id000001e4c586b2b0 [label = "array"]
+Id000001e4c586bf30 [label="STRING\n mref = #17\n val_id = #87"]
+IdVal000001e4c586bf30 [label="1"]
+Id000001e4c586bf30->IdVal000001e4c586bf30
+Id000001e4c586b2b0->Id000001e4c586bf30
+Id000001e4c586c4b0 [label="STRING\n mref = #17\n val_id = #89"]
+IdVal000001e4c586c4b0 [label="2"]
+Id000001e4c586c4b0->IdVal000001e4c586c4b0
+Id000001e4c586b2b0->Id000001e4c586c4b0
+Id000001e4c586c3b0 [label="STRING\n mref = #17\n val_id = #91"]
+IdVal000001e4c586c3b0 [label="3"]
+Id000001e4c586c3b0->IdVal000001e4c586c3b0
+Id000001e4c586b2b0->Id000001e4c586c3b0
+Id000001e4c586a7b0->Id000001e4c586a730
+Id000001e4c586a7b0->Id000001e4c586b2b0
+Id000001e4c586cee0->Id000001e4c586a7b0
+Id000001e4c586ce40->Id000001e4c586cee0
+Id000001e4c586cf30 [label="stmt"]
+Id000001e4c586aab0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586aab0 [label="puts"]
+Id000001e4c586aab0->IdMethodNameVal000001e4c586aab0 [label="name"]
+Id000001e4c586a380 [label="params"]
+Id000001e4c586aab0->Id000001e4c586a380
+Id000001e4c586a930 [label="."]
+Id000001e4c586bab0 [label="var or method\n localnum = 2"]
+IdVal000001e4c586bab0 [label="array"]
+Id000001e4c586bab0->IdVal000001e4c586bab0
+Id000001e4c586bdb0 [label="method_call\n mref = #94"]
+IdMethodNameVal000001e4c586bdb0 [label="join"]
+Id000001e4c586bdb0->IdMethodNameVal000001e4c586bdb0 [label="name"]
+Id000001e4c586a340 [label="params"]
+Id000001e4c586bdb0->Id000001e4c586a340
+Id000001e4c586bd30 [label="STRING\n mref = #17\n val_id = #96"]
+IdVal000001e4c586bd30 [label=","]
+Id000001e4c586bd30->IdVal000001e4c586bd30
+Id000001e4c586a340->Id000001e4c586bd30
+Id000001e4c586a930->Id000001e4c586bab0 [label = "object"]
+Id000001e4c586a930->Id000001e4c586bdb0 [label = "method"]
+Id000001e4c586a380->Id000001e4c586a930
+Id000001e4c586cf30->Id000001e4c586aab0
+Id000001e4c586ce40->Id000001e4c586cf30
+Id000001e4c586d070 [label="stmt"]
+Id000001e4c586aeb0 [label="="]
+Id000001e4c586b9b0 [label="var or method\n localnum = 1"]
+IdVal000001e4c586b9b0 [label="str"]
+Id000001e4c586b9b0->IdVal000001e4c586b9b0
+Id000001e4c586c530 [label="STRING\n mref = #17\n val_id = #98"]
+IdVal000001e4c586c530 [label="  hello  "]
+Id000001e4c586c530->IdVal000001e4c586c530
+Id000001e4c586aeb0->Id000001e4c586b9b0
+Id000001e4c586aeb0->Id000001e4c586c530
+Id000001e4c586d070->Id000001e4c586aeb0
+Id000001e4c586ce40->Id000001e4c586d070
+Id000001e4c586d340 [label="stmt"]
+Id000001e4c586b0b0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586b0b0 [label="puts"]
+Id000001e4c586b0b0->IdMethodNameVal000001e4c586b0b0 [label="name"]
+Id000001e4c586a4e0 [label="params"]
+Id000001e4c586b0b0->Id000001e4c586a4e0
+Id000001e4c586a830 [label="."]
+Id000001e4c586aa30 [label="var or method\n localnum = 1"]
+IdVal000001e4c586aa30 [label="str"]
+Id000001e4c586aa30->IdVal000001e4c586aa30
+Id000001e4c586b730 [label="method_call\n mref = #101"]
+IdMethodNameVal000001e4c586b730 [label="strip"]
+Id000001e4c586b730->IdMethodNameVal000001e4c586b730 [label="name"]
+Id000001e4c586a830->Id000001e4c586aa30 [label = "object"]
+Id000001e4c586a830->Id000001e4c586b730 [label = "method"]
+Id000001e4c586a4e0->Id000001e4c586a830
+Id000001e4c586d340->Id000001e4c586b0b0
+Id000001e4c586ce40->Id000001e4c586d340
+Id000001e4c586d6b0 [label="stmt"]
+Id000001e4c586ab30 [label="="]
+Id000001e4c586b1b0 [label="var or method\n localnum = 1"]
+IdVal000001e4c586b1b0 [label="str"]
+Id000001e4c586b1b0->IdVal000001e4c586b1b0
+Id000001e4c586bb30 [label="STRING\n mref = #17\n val_id = #103"]
+IdVal000001e4c586bb30 [label="hello"]
+Id000001e4c586bb30->IdVal000001e4c586bb30
+Id000001e4c586ab30->Id000001e4c586b1b0
+Id000001e4c586ab30->Id000001e4c586bb30
+Id000001e4c586d6b0->Id000001e4c586ab30
+Id000001e4c586ce40->Id000001e4c586d6b0
+Id000001e4c586d390 [label="stmt"]
+Id000001e4c586b7b0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586b7b0 [label="puts"]
+Id000001e4c586b7b0->IdMethodNameVal000001e4c586b7b0 [label="name"]
+Id000001e4c586a460 [label="params"]
+Id000001e4c586b7b0->Id000001e4c586a460
+Id000001e4c586be30 [label="."]
+Id000001e4c586a630 [label="var or method\n localnum = 1"]
+IdVal000001e4c586a630 [label="str"]
+Id000001e4c586a630->IdVal000001e4c586a630
+Id000001e4c586b830 [label="method_call\n mref = #106"]
+IdMethodNameVal000001e4c586b830 [label="reverse"]
+Id000001e4c586b830->IdMethodNameVal000001e4c586b830 [label="name"]
+Id000001e4c586be30->Id000001e4c586a630 [label = "object"]
+Id000001e4c586be30->Id000001e4c586b830 [label = "method"]
+Id000001e4c586a460->Id000001e4c586be30
+Id000001e4c586d390->Id000001e4c586b7b0
+Id000001e4c586ce40->Id000001e4c586d390
+Id000001e4c586d110 [label="stmt"]
+Id000001e4c586a8b0 [label="="]
+Id000001e4c586b030 [label="var or method\n localnum = 1"]
+IdVal000001e4c586b030 [label="str"]
+Id000001e4c586b030->IdVal000001e4c586b030
+Id000001e4c586adb0 [label="STRING\n mref = #17\n val_id = #108"]
+IdVal000001e4c586adb0 [label=""]
+Id000001e4c586adb0->IdVal000001e4c586adb0
+Id000001e4c586a8b0->Id000001e4c586b030
+Id000001e4c586a8b0->Id000001e4c586adb0
+Id000001e4c586d110->Id000001e4c586a8b0
+Id000001e4c586ce40->Id000001e4c586d110
+Id000001e4c586d700 [label="stmt"]
+Id000001e4c586afb0 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586afb0 [label="puts"]
+Id000001e4c586afb0->IdMethodNameVal000001e4c586afb0 [label="name"]
+Id000001e4c586a2a0 [label="params"]
+Id000001e4c586afb0->Id000001e4c586a2a0
+Id000001e4c586b5b0 [label="."]
+Id000001e4c586a9b0 [label="var or method\n localnum = 1"]
+IdVal000001e4c586a9b0 [label="str"]
+Id000001e4c586a9b0->IdVal000001e4c586a9b0
+Id000001e4c586ba30 [label="method_call\n mref = #111"]
+IdMethodNameVal000001e4c586ba30 [label="empty?"]
+Id000001e4c586ba30->IdMethodNameVal000001e4c586ba30 [label="name"]
+Id000001e4c586b5b0->Id000001e4c586a9b0 [label = "object"]
+Id000001e4c586b5b0->Id000001e4c586ba30 [label = "method"]
+Id000001e4c586a2a0->Id000001e4c586b5b0
+Id000001e4c586d700->Id000001e4c586afb0
+Id000001e4c586ce40->Id000001e4c586d700
+Id000001e4c586d3e0 [label="stmt"]
+Id000001e4c586ae30 [label="="]
+Id000001e4c586b130 [label="var or method\n localnum = 1"]
+IdVal000001e4c586b130 [label="str"]
+Id000001e4c586b130->IdVal000001e4c586b130
+Id000001e4c586abb0 [label="STRING\n mref = #17\n val_id = #113"]
+IdVal000001e4c586abb0 [label="123"]
+Id000001e4c586abb0->IdVal000001e4c586abb0
+Id000001e4c586ae30->Id000001e4c586b130
+Id000001e4c586ae30->Id000001e4c586abb0
+Id000001e4c586d3e0->Id000001e4c586ae30
+Id000001e4c586ce40->Id000001e4c586d3e0
+Id000001e4c586d4d0 [label="stmt"]
+Id000001e4c586b330 [label="method_call\n mref = #21"]
+IdMethodNameVal000001e4c586b330 [label="puts"]
+Id000001e4c586b330->IdMethodNameVal000001e4c586b330 [label="name"]
+Id000001e4c586a400 [label="params"]
+Id000001e4c586b330->Id000001e4c586a400
+Id000001e4c586b3b0 [label="+\n mref = #32"]
+Id000001e4c586b8b0 [label="."]
+Id000001e4c586ac30 [label="var or method\n localnum = 1"]
+IdVal000001e4c586ac30 [label="str"]
+Id000001e4c586ac30->IdVal000001e4c586ac30
+Id000001e4c586acb0 [label="method_call\n mref = #116"]
+IdMethodNameVal000001e4c586acb0 [label="to_i"]
+Id000001e4c586acb0->IdMethodNameVal000001e4c586acb0 [label="name"]
+Id000001e4c586b8b0->Id000001e4c586ac30 [label = "object"]
+Id000001e4c586b8b0->Id000001e4c586acb0 [label = "method"]
+Id000001e4c586b930 [label="INT\n mref = #29\n val_id = #117"]
+IdVal000001e4c586b930 [label="321"]
+Id000001e4c586b930->IdVal000001e4c586b930
+Id000001e4c586b3b0->Id000001e4c586b8b0
+Id000001e4c586b3b0->Id000001e4c586b930
+Id000001e4c586a400->Id000001e4c586b3b0
+Id000001e4c586d4d0->Id000001e4c586b330
+Id000001e4c586ce40->Id000001e4c586d4d0
 }

@@ -1,1 +1,1 @@
-Enter your name: Hello, nikita
+Enter your name: Hello, input
